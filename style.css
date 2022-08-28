@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container-input-box {
+  width: 500px;
+  height: 50px;
+  /* background-color: red; */
+  border: 3px solid black;
+  display: grid;
+  grid-template-columns: 90% 10%;
+  font-size: 18px;
+}
+
+.container-input-box input {
+  outline: none;
+  border: none;
+  height: 100%;
+  padding: 8px;
+}
+
+.container-input-box #submit-btn {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  /* background-color: blue; */
+  /* padding: 4px; */
+  height: 100%;
+  font-weight: 800;
+  font-size: 24px;
+}
