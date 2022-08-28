@@ -27,8 +27,8 @@ body {
   font-size: 1.125rem;
 }
 
-.container-input-box #btn-add-new-item,
-.container-item-list #item-delete-btn {
+.container-input-box .btn-add-new-item,
+.container-item-list .btn-delete-item {
   cursor: pointer;
   outline: none;
   border: none;
@@ -39,7 +39,7 @@ body {
   font-size: 1.5rem;
 }
 
-.container-item-list #item-delete-btn {
+.container-item-list .btn-delete-item {
   width: 100%;
 }
 

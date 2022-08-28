@@ -1,28 +1,36 @@
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
-const addNewItemBtn = document.querySelector("#btn-add-new-item");
+
+const addNewItemBtn = document.querySelector(".btn-add-new-item");
+let deleteItemBtns;
+
 let inputText = document.querySelector("#input-item-text");
 
 const sortType = "asc";
+let recentlyRemovedItems = [];
 
-const unarrangedItems = [
+let allItems = [
   {
     item_name: "Pickles",
+    item_id: returnItemID(),
     item_avg_price: "3.99",
     item_is_recurrent: true,
   },
   {
     item_name: "Bread",
+    item_id: returnItemID(),
     item_avg_price: "5.99",
     item_is_recurrent: true,
   },
   {
     item_name: "Vodka",
+    item_id: returnItemID(),
     item_avg_price: "17.49",
     item_is_recurrent: false,
   },
   {
     item_name: "Cake",
+    item_id: returnItemID(),
     item_avg_price: "12.49",
     item_is_recurrent: false,
   },
@@ -58,6 +66,7 @@ function addNewItem(e) {
   if (inputText.value !== "") {
     itemObject = {
       item_name: itemValue,
+      item_id: returnItemID(),
       item_avg_price: fetchAvgPrice(),
       item_is_recurrent: false,
     };
@@ -69,9 +78,27 @@ function addNewItem(e) {
   updateItemsList(itemObject);
 }
 
+function returnItemID(idLen = 8) {
+  let id = "";
+  for (let i = 0; i < idLen; i++) {
+    id += String(Math.round(Math.random() * 9));
+  }
+
+  return id;
+}
+
+function deleteItem(e) {
+  //   let item = e.target.parentElement.parentElement;
+  //   console.log(e.target.parentElement.parentElement);
+  let deletedItemId = e.target.getAttribute("data-item-id");
+  allItems = allItems.filter(({ item_id }) => item_id !== deletedItemId);
+  displayItemList();
+  //   console.log("clicked!");
+}
+
 function updateItemsList(newItemObj) {
-  unarrangedItems.push(newItemObj);
-  console.log("new items list", unarrangedItems);
+  allItems.push(newItemObj);
+  console.log("new items list", allItems);
 
   displayItemList();
 }
@@ -88,10 +115,10 @@ function fetchAvgPrice() {
 function displayItemList() {
   let html = "";
 
-  let arrangedItems = filterAndSortListItems(unarrangedItems);
+  let arrangedItems = filterAndSortListItems(allItems);
 
   for (let item of arrangedItems) {
-    let { item_name, item_avg_price, item_is_recurrent } = item;
+    let { item_name, item_id, item_avg_price, item_is_recurrent } = item;
     html += `
         <div class="${
           item_is_recurrent
@@ -103,13 +130,23 @@ function displayItemList() {
               <p class="list-item-price">Average price of <span>$${item_avg_price}</span></p>
             </div>
             <div class="list-item-delete">
-              <button class="btn item-delete-btn" id="item-delete-btn">X</button>
+              <button class="btn btn-delete-item" data-item-id="${item_id}">X</button>
             </div>
           </div>
         `;
   }
 
   list.innerHTML = html;
+
+  //   add the button listeners here
+  deleteItemBtns = document.querySelectorAll(".btn-delete-item");
+  addDeleteBtnListeners();
+}
+
+function addDeleteBtnListeners() {
+  deleteItemBtns.forEach((deleteBtn) =>
+    deleteBtn.addEventListener("click", (e) => deleteItem(e))
+  );
 }
 
 displayItemList();
