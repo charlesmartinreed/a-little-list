@@ -28,7 +28,8 @@ body {
 }
 
 .container-input-box .btn-add-new-item,
-.container-item-list .btn-delete-item {
+.container-item-list .btn-delete-item,
+.container-item-list .btn-lock-item {
   cursor: pointer;
   outline: none;
   border: none;
@@ -40,7 +41,7 @@ body {
 }
 
 .container-item-list .btn-delete-item {
-  width: 100%;
+  /* width: 100%; */
 }
 
 .container-item-list {
@@ -48,13 +49,19 @@ body {
   min-height: 50px;
   border: 3px solid yellow;
   display: grid;
-  grid-template-columns: 90% 10%;
+  grid-template-columns: 85% 15%;
   margin: 4px 0;
   padding: 1rem;
+  /* background-color: rebeccapurple; */
 }
 
-.container-item-list.recurrent .list-item-title::after {
-  content: "🔒";
+.container-item-list .list-item-icons {
+  /* display: inline-block; */
+  background-color: red;
+}
+
+.container-item-list.recurrent {
+  background-color: lightcoral;
 }
 
 .container-item-list .list-item-title {

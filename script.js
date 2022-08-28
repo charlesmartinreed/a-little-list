@@ -3,6 +3,7 @@ const listItems = document.querySelectorAll(".container-list-item");
 
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
 let deleteItemBtns;
+let lockedItemBtns;
 
 let inputText = document.querySelector("#input-item-text");
 
@@ -88,12 +89,26 @@ function returnItemID(idLen = 8) {
 }
 
 function deleteItem(e) {
-  //   let item = e.target.parentElement.parentElement;
-  //   console.log(e.target.parentElement.parentElement);
-  let deletedItemId = e.target.getAttribute("data-item-id");
+  let deletedItemId =
+    e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
+
   allItems = allItems.filter(({ item_id }) => item_id !== deletedItemId);
   displayItemList();
-  //   console.log("clicked!");
+}
+
+function toggleRecurrentItem(e) {
+  let itemId =
+    e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
+
+  //   let [item] = allItems.filter(({ item_id }) => item_id === itemId);
+  //   item.item_is_recurrent = !item.item_is_recurrent;
+
+  allItems.map((item) => {
+    if (item.item_id === itemId)
+      item.item_is_recurrent = !item.item_is_recurrent;
+  });
+  console.log(allItems);
+  displayItemList();
 }
 
 function updateItemsList(newItemObj) {
@@ -125,12 +140,15 @@ function displayItemList() {
             ? "container-item-list recurrent"
             : "container-item-list"
         }">
-            <div class="list-item">
+            <div class="list-item" data-item-id="${item_id}">
               <p class="list-item-title">${item_name}</p>
               <p class="list-item-price">Average price of <span>$${item_avg_price}</span></p>
             </div>
             <div class="list-item-delete">
-              <button class="btn btn-delete-item" data-item-id="${item_id}">X</button>
+            <button class="btn btn-lock-item">${
+              item_is_recurrent ? "🔒" : "🔓"
+            }</button>
+              <button class="btn btn-delete-item" >X</button>
             </div>
           </div>
         `;
@@ -140,12 +158,21 @@ function displayItemList() {
 
   //   add the button listeners here
   deleteItemBtns = document.querySelectorAll(".btn-delete-item");
+  lockedItemBtns = document.querySelectorAll(".btn-lock-item");
+
   addDeleteBtnListeners();
+  addLockBtnListeners();
 }
 
 function addDeleteBtnListeners() {
   deleteItemBtns.forEach((deleteBtn) =>
     deleteBtn.addEventListener("click", (e) => deleteItem(e))
+  );
+}
+
+function addLockBtnListeners() {
+  lockedItemBtns.forEach((lockBtn) =>
+    lockBtn.addEventListener("click", (e) => toggleRecurrentItem(e))
   );
 }
 
