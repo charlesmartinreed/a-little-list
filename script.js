@@ -1,5 +1,7 @@
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
+const addNewItemBtn = document.querySelector("#btn-add-new-item");
+let inputText = document.querySelector("#input-item-text");
 
 const sortType = "asc";
 
@@ -26,7 +28,13 @@ const unarrangedItems = [
   },
 ];
 
-const arrangedItems = filterAndSortListItems(unarrangedItems);
+// EVENT LISTENERS
+addNewItemBtn.addEventListener("click", (e) => addNewItem(e));
+
+window.addEventListener("keypress", (e) => {
+  if (inputText.value === "") return;
+  if (e.code === "Enter") addNewItem();
+});
 
 function filterAndSortListItems(messyArr) {
   let recurrentItems = messyArr
@@ -40,8 +48,47 @@ function filterAndSortListItems(messyArr) {
   return [...recurrentItems, ...novelItems];
 }
 
+function addNewItem(e) {
+  //   e.preventDefault();
+
+  //   let inputValue = e.target.previousElementSibling.value;
+  let itemValue = inputText.value;
+  let itemObject;
+
+  if (inputText.value !== "") {
+    itemObject = {
+      item_name: itemValue,
+      item_avg_price: fetchAvgPrice(),
+      item_is_recurrent: false,
+    };
+    inputText.value = "";
+  } else {
+    return;
+  }
+
+  updateItemsList(itemObject);
+}
+
+function updateItemsList(newItemObj) {
+  unarrangedItems.push(newItemObj);
+  console.log("new items list", unarrangedItems);
+
+  displayItemList();
+}
+
+function fetchAvgPrice() {
+  // PLACEHOLDER IMPLEMENTATION
+  let dollars = String(Math.round(Math.random() * 20));
+  let cents = String(Math.round(Math.random() * 99));
+  let centsAdjusted = cents >= 10 ? cents : `0${cents}`;
+
+  return `${dollars}.${centsAdjusted}`;
+}
+
 function displayItemList() {
   let html = "";
+
+  let arrangedItems = filterAndSortListItems(unarrangedItems);
 
   for (let item of arrangedItems) {
     let { item_name, item_avg_price, item_is_recurrent } = item;
@@ -62,7 +109,6 @@ function displayItemList() {
         `;
   }
 
-  console.log(html);
   list.innerHTML = html;
 }
 
