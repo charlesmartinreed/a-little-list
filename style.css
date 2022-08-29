@@ -90,6 +90,11 @@ body {
   /* background-color: rebeccapurple; */
 }
 
+.container-item-list .list-item-delete {
+  display: flex;
+  justify-content: space-around;
+}
+
 .container-item-list .list-item-icons {
   /* display: inline-block; */
   background-color: red;

@@ -3,6 +3,7 @@ const listItems = document.querySelectorAll(".container-list-item");
 
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
 const searchItemsBtn = document.querySelector("#btn-search-item-list");
+const sortItemsBtn = document.querySelector(".btn-sort-item-list");
 let deleteItemBtns;
 let lockedItemBtns;
 
@@ -10,7 +11,8 @@ let inputContainer = document.querySelector(".container-input-box");
 let addModeInput = document.querySelector("#input-add-item");
 let searchModeInput = document.querySelector("#input-search-item");
 
-const sortType = "asc";
+let sortByDescending = true;
+
 let recentlyRemovedItems = [];
 
 let allItems = [
@@ -43,6 +45,7 @@ let allItems = [
 // EVENT LISTENERS
 addNewItemBtn.addEventListener("click", (e) => addNewItem(e));
 searchItemsBtn.addEventListener("click", () => handleSearchBtnClicked());
+sortItemsBtn.addEventListener("click", () => handleSortBtnClicked());
 
 addModeInput.addEventListener("keypress", (e) => {
   if (e.value === "") return;
@@ -56,14 +59,39 @@ searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 //   if (e.code === "Enter") addNewItem();
 // });
 
+function handleSortBtnClicked() {
+  sortByDescending = !sortByDescending;
+  console.log(sortByDescending);
+  displayItemList(allItems);
+}
+
 function filterAndSortListItems(messyArr) {
+  // let recurrentItems = messyArr
+  //   .filter(({ item_is_recurrent }) => item_is_recurrent)
+  //   .sort((a, b) => a.item_avg_price - b.item_avg_price);
+
   let recurrentItems = messyArr
     .filter(({ item_is_recurrent }) => item_is_recurrent)
-    .sort((a, b) => a.item_avg_price - b.item_avg_price);
+    .sort(sortOperation(sortByDescending));
+
+  // let novelItems = messyArr
+  //   .filter(({ item_is_recurrent }) => !item_is_recurrent)
+  //   .sort((a, b) => a.item_avg_price - b.item_avg_price);
 
   let novelItems = messyArr
     .filter(({ item_is_recurrent }) => !item_is_recurrent)
-    .sort((a, b) => a.item_avg_price - b.item_avg_price);
+    .sort(sortOperation(sortByDescending));
+
+  function sortOperation(direction, sortable) {
+    switch (direction) {
+      case false:
+        return (a, b) => a.item_avg_price - b.item_avg_price;
+      case true:
+        return (a, b) => b.item_avg_price - a.item_avg_price;
+      default:
+        break;
+    }
+  }
 
   return [...recurrentItems, ...novelItems];
 }
@@ -188,7 +216,7 @@ function displayItemList(itemList) {
             <button class="btn btn-lock-item">${
               item_is_recurrent ? "🔒" : "🔓"
             }</button>
-              <button class="btn btn-delete-item" >X</button>
+              <button class="btn btn-delete-item" >🗑️</button>
             </div>
           </div>
         `;
