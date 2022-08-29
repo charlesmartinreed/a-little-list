@@ -2,35 +2,38 @@ const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
 
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
+const searchItemsBtn = document.querySelector("#btn-search-item-list");
 let deleteItemBtns;
 let lockedItemBtns;
 
-let inputText = document.querySelector("#input-item-text");
+let inputContainer = document.querySelector(".container-input-box");
+let addModeInput = document.querySelector("#input-add-item");
+let searchModeInput = document.querySelector("#input-search-item");
 
 const sortType = "asc";
 let recentlyRemovedItems = [];
 
 let allItems = [
   {
-    item_name: "Pickles",
+    item_name: "pickles",
     item_id: returnItemID(),
     item_avg_price: "3.99",
     item_is_recurrent: true,
   },
   {
-    item_name: "Bread",
+    item_name: "bread",
     item_id: returnItemID(),
     item_avg_price: "5.99",
     item_is_recurrent: true,
   },
   {
-    item_name: "Vodka",
+    item_name: "vodka",
     item_id: returnItemID(),
     item_avg_price: "17.49",
     item_is_recurrent: false,
   },
   {
-    item_name: "Cake",
+    item_name: "cake",
     item_id: returnItemID(),
     item_avg_price: "12.49",
     item_is_recurrent: false,
@@ -39,11 +42,19 @@ let allItems = [
 
 // EVENT LISTENERS
 addNewItemBtn.addEventListener("click", (e) => addNewItem(e));
+searchItemsBtn.addEventListener("click", () => handleSearchBtnClicked());
 
-window.addEventListener("keypress", (e) => {
-  if (inputText.value === "") return;
+addModeInput.addEventListener("keypress", (e) => {
+  if (e.value === "") return;
   if (e.code === "Enter") addNewItem();
 });
+
+searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
+
+// window.addEventListener("keypress", (e) => {
+//   if (addModeInput.value === "") return;
+//   if (e.code === "Enter") addNewItem();
+// });
 
 function filterAndSortListItems(messyArr) {
   let recurrentItems = messyArr
@@ -57,21 +68,47 @@ function filterAndSortListItems(messyArr) {
   return [...recurrentItems, ...novelItems];
 }
 
+function handleSearchBtnClicked() {
+  inputContainer.classList.toggle("add-mode");
+  inputContainer.classList.toggle("search-mode");
+}
+
+function searchItemsList(e) {
+  let input = searchModeInput.value;
+  let inputLen = input.length;
+
+  if (input === "") {
+    displayItemList(allItems);
+  }
+
+  if (input !== "" && inputLen >= 1) {
+    let matches = allItems.filter((item) => {
+      if (item.item_name.slice(0, inputLen) === input) {
+        // console.log(item.item_name.slice(0, inputLen));
+        return item;
+      }
+    });
+
+    displayItemList(matches);
+  }
+  //a,ab
+}
+
 function addNewItem(e) {
   //   e.preventDefault();
 
   //   let inputValue = e.target.previousElementSibling.value;
-  let itemValue = inputText.value;
+  let itemValue = addModeInput.value;
   let itemObject;
 
-  if (inputText.value !== "") {
+  if (addModeInput.value !== "") {
     itemObject = {
       item_name: itemValue,
       item_id: returnItemID(),
       item_avg_price: fetchAvgPrice(),
       item_is_recurrent: false,
     };
-    inputText.value = "";
+    addModeInput.value = "";
   } else {
     return;
   }
@@ -92,8 +129,11 @@ function deleteItem(e) {
   let deletedItemId =
     e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
 
-  allItems = allItems.filter(({ item_id }) => item_id !== deletedItemId);
-  displayItemList();
+  let updatedItemsList = allItems.filter(
+    ({ item_id }) => item_id !== deletedItemId
+  );
+
+  displayItemList(updatedItemsList);
 }
 
 function toggleRecurrentItem(e) {
@@ -107,15 +147,15 @@ function toggleRecurrentItem(e) {
     if (item.item_id === itemId)
       item.item_is_recurrent = !item.item_is_recurrent;
   });
-  console.log(allItems);
-  displayItemList();
+
+  displayItemList(allItems);
 }
 
 function updateItemsList(newItemObj) {
   allItems.push(newItemObj);
-  console.log("new items list", allItems);
+  // console.log("new items list", allItems);
 
-  displayItemList();
+  displayItemList(allItems);
 }
 
 function fetchAvgPrice() {
@@ -127,10 +167,10 @@ function fetchAvgPrice() {
   return `${dollars}.${centsAdjusted}`;
 }
 
-function displayItemList() {
+function displayItemList(itemList) {
   let html = "";
 
-  let arrangedItems = filterAndSortListItems(allItems);
+  let arrangedItems = filterAndSortListItems(itemList);
 
   for (let item of arrangedItems) {
     let { item_name, item_id, item_avg_price, item_is_recurrent } = item;
@@ -176,4 +216,4 @@ function addLockBtnListeners() {
   );
 }
 
-displayItemList();
+displayItemList(allItems);

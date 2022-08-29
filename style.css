@@ -15,16 +15,51 @@ body {
   min-height: 50px;
   /* background-color: red; */
   border: 3px solid black;
-  display: grid;
   grid-template-columns: 90% 10%;
+
+  display: grid;
   padding: 1rem;
+  margin: 8px 0;
 }
 
-.container-input-box input {
+#input-search-item,
+#input-add-item {
   outline: none;
   border: none;
   height: 100%;
   font-size: 1.125rem;
+}
+
+.container-input-box.search-mode .btn-add-new-item {
+  visibility: hidden;
+}
+
+.container-input-box.add-mode .btn-add-new-item {
+  visibility: visible;
+}
+
+.container-input-box.search-mode #input-add-item {
+  display: none;
+}
+
+.container-input-box.add-mode #input-add-item {
+  display: block;
+}
+
+.container-input-box.search-mode #input-search-item {
+  display: block;
+}
+
+.container-input-box.add-mode #input-search-item {
+  display: none;
+}
+
+#input-search-item {
+  display: none;
+}
+
+#input-add-item {
+  display: block;
 }
 
 .container-input-box .btn-add-new-item,
@@ -50,7 +85,7 @@ body {
   border: 3px solid yellow;
   display: grid;
   grid-template-columns: 85% 15%;
-  margin: 4px 0;
+  /* margin: 4px 0; */
   padding: 1rem;
   /* background-color: rebeccapurple; */
 }
@@ -78,4 +113,22 @@ body {
 .container-item-list .list-item-price span {
   color: green;
   font-weight: 600;
+}
+
+.container-ui-buttons {
+  max-height: 40px;
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #444;
+}
+
+.btn-ui {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  font-size: 2rem;
+  background: none;
+  padding: 8px;
 }

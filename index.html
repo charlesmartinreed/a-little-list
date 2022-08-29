@@ -9,10 +9,6 @@
     <title>A Little List</title>
   </head>
   <body>
-    <div class="container-input-box">
-      <input type="text" id="input-item-text" placeholder="Add a new item!" />
-      <button class="btn btn-add-new-item">+</button>
-    </div>
     <div class="container-items">
       <!-- <div class="container-item-list">
         <div class="list-item">
@@ -32,6 +28,20 @@
           <button class="btn btn-delete-item>X</button>
         </div>
       </div> -->
+    </div>
+    <div class="container-input-box add-mode">
+      <input
+        type="text"
+        id="input-search-item"
+        placeholder="Search your list"
+      />
+      <input type="text" id="input-add-item" placeholder="Add a new item" />
+      <button class="btn btn-add-new-item">+</button>
+    </div>
+    <div class="container-ui-buttons">
+      <button class="btn-ui btn-search-item-list" id="btn-search-item-list">
+        🔍
+      </button>
     </div>
   </body>
 </html>
