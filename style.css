@@ -75,8 +75,12 @@ body {
   font-size: 1.5rem;
 }
 
-.container-item-list .btn-delete-item {
-  /* width: 100%; */
+.container-items {
+  max-height: 70vh;
+  max-width: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 .container-item-list {
