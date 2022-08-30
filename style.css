@@ -4,20 +4,35 @@
   box-sizing: border-box;
 }
 
+:root {
+  --color-bg-item-recurrent: #2e2555;
+  --color-bg-item-temporal: #423872;
+  --color-link: #1e4279;
+}
+
 html,
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #222;
+  color: #ececec;
+}
+
+button {
+  -webkit-filter: grayscale(0.95);
+  filter: grayscale(0.95);
+  color: #ececec;
 }
 
 .container-input-box {
-  width: 500px;
+  width: 510px;
   min-height: 50px;
   /* background-color: red; */
-  border: 3px solid black;
+  /* border: 3px solid black; */
   grid-template-columns: 90% 10%;
 
   display: grid;
+  gap: 4px;
   padding: 1rem;
   margin: 8px 0;
 }
@@ -25,7 +40,10 @@ body {
 #input-search-item,
 #input-add-item {
   outline: none;
+  padding: 0.5rem;
   border: none;
+  border-radius: 2px;
+  /* background: none; */
   height: 100%;
   font-size: 1.125rem;
 }
@@ -68,30 +86,48 @@ body {
   cursor: pointer;
   outline: none;
   border: none;
-  /* background-color: blue; */
-  /* padding: 4px; */
+  border-radius: 2px;
+  background: none;
   height: 100%;
   font-weight: 800;
-  font-size: 1.5rem;
+  margin-left: 4px;
+  font-size: 20px;
+  height: 40px;
+  width: 40px;
+}
+
+.container-input-box .btn-add-new-item {
+  font-size: 30px;
 }
 
 .container-items {
+  height: 70vh;
+  border-radius: 2px;
   max-height: 70vh;
-  max-width: 500px;
+  min-width: 500px;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  background-color: rgba(51, 51, 51, 0.4);
+  padding: 8px;
 }
 
 .container-item-list {
   width: 500px;
   min-height: 50px;
-  border: 3px solid yellow;
+  background-color: var(--color-bg-item-temporal);
+  border-radius: 2px;
   display: grid;
   grid-template-columns: 85% 15%;
-  /* margin: 4px 0; */
+  margin: 4px 0;
   padding: 1rem;
+
+  transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   /* background-color: rebeccapurple; */
+}
+
+.container-item-list:hover {
+  transform: scale(1.05);
 }
 
 .container-item-list .list-item-delete {
@@ -100,12 +136,11 @@ body {
 }
 
 .container-item-list .list-item-icons {
-  /* display: inline-block; */
   background-color: red;
 }
 
 .container-item-list.recurrent {
-  background-color: lightcoral;
+  background-color: var(--color-bg-item-recurrent);
 }
 
 .container-item-list .list-item-title {
@@ -130,7 +165,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #444;
+  /* border: 1px solid #444; */
 }
 
 .btn-ui {
@@ -140,4 +175,77 @@ body {
   font-size: 2rem;
   background: none;
   padding: 8px;
+}
+
+#modal-help {
+  height: 400px;
+  width: 600px;
+  z-index: 999;
+  background-color: #444;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: none;
+  /* box-shadow: 4px 4px 16px rgba(141, 141, 141, 0.2); */
+  border-radius: 4px;
+  display: none;
+
+  transform: translate(-50%, -50%) scale(0);
+}
+
+#modal-help div {
+  padding: 12px;
+  margin: 0 12px;
+  font-size: 19px;
+}
+
+#modal-help div #recurrent-tag-color {
+  color: var(--color-bg-item-recurrent);
+  font-weight: 800;
+}
+
+#modal-help.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#modal-help.active div:last-of-type {
+  align-self: center;
+}
+
+#modal-help.active #btn-close-modal {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: none;
+  font-size: 1.25rem;
+  /* background: rebeccapurple; */
+  /* background-color: var(--color-link); */
+  background-color: #345990;
+  font-weight: 600;
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
+  padding: 0.5rem 3rem;
+}
+
+.container-page {
+  min-height: 100vh;
+  min-width: 100vw;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-page.modal-active {
+}
+
+.container-page.modal-active > * {
+  -webkit-filter: blur(8px) grayscale(0.7);
+  filter: blur(8px) grayscale(0.7);
 }

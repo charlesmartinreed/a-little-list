@@ -9,23 +9,43 @@
     <title>A Little List</title>
   </head>
   <body>
-    <div class="container-items">
-      <!-- dynamically generated in JS -->
+    <div class="modal modal-help" id="modal-help">
+      <div>
+        Have an item you just can't live without? Use 🔒 to tag it as
+        <span id="recurrent-tag-color">recurring</span> and ensure it stays in
+        your list, week after week.
+      </div>
+      <div>Use 🔍 to search through your currently added items.</div>
+      <div>
+        Use &uarr;&darr; to sort your list items by price, from lowest to
+        highest or, alternatively, highest to lowest.
+      </div>
+      <div>Use 🗑️ to remove an item from your list.</div>
+      <div>
+        <button class="btn-close-modal" id="btn-close-modal">Got it!</button>
+      </div>
     </div>
-    <div class="container-input-box add-mode">
-      <input
-        type="text"
-        id="input-search-item"
-        placeholder="Search your list"
-      />
-      <input type="text" id="input-add-item" placeholder="Add a new item" />
-      <button class="btn btn-add-new-item">+</button>
-    </div>
-    <div class="container-ui-buttons">
-      <button class="btn-ui btn-search-item-list" id="btn-search-item-list">
-        🔍
-      </button>
-      <button class="btn-ui btn-sort-item-list">&uarr;&darr;</button>
+    <div class="container-page">
+      <div class="container-items">
+        <!-- dynamically generated in JS -->
+      </div>
+      <div class="container-input-box add-mode">
+        <input
+          type="text"
+          id="input-search-item"
+          placeholder="Search your list"
+        />
+        <input type="text" id="input-add-item" placeholder="Add a new item" />
+        <button class="btn btn-add-new-item">+</button>
+      </div>
+      <div class="container-ui-buttons">
+        <button class="btn-ui btn-help">❔</button>
+
+        <button class="btn-ui btn-search-item-list" id="btn-search-item-list">
+          🔍
+        </button>
+        <button class="btn-ui btn-sort-item-list">&uarr;&darr;</button>
+      </div>
     </div>
   </body>
 </html>

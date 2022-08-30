@@ -1,9 +1,15 @@
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
 
+const pageContainer = document.querySelector(".container-page");
+const helpModal = document.querySelector("#modal-help");
+
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
 const searchItemsBtn = document.querySelector("#btn-search-item-list");
 const sortItemsBtn = document.querySelector(".btn-sort-item-list");
+const helpBtn = document.querySelector(".btn-help");
+const closeHelpBtn = document.querySelector("#btn-close-modal");
+
 let deleteItemBtns;
 let lockedItemBtns;
 
@@ -47,6 +53,9 @@ addNewItemBtn.addEventListener("click", (e) => addNewItem(e));
 searchItemsBtn.addEventListener("click", () => handleSearchBtnClicked());
 sortItemsBtn.addEventListener("click", () => handleSortBtnClicked());
 
+helpBtn.addEventListener("click", () => handleModal());
+closeHelpBtn.addEventListener("click", () => handleModal());
+
 addModeInput.addEventListener("keypress", (e) => {
   if (e.value === "") return;
   if (e.code === "Enter") addNewItem();
@@ -58,6 +67,11 @@ searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 //   if (addModeInput.value === "") return;
 //   if (e.code === "Enter") addNewItem();
 // });
+
+function handleModal() {
+  helpModal.classList.toggle("active");
+  pageContainer.classList.toggle("modal-active");
+}
 
 function handleSortBtnClicked() {
   sortByDescending = !sortByDescending;
