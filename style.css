@@ -191,12 +191,22 @@ button {
   display: none;
 
   transform: translate(-50%, -50%) scale(0);
+  /* font-weight: 400; */
 }
 
 #modal-help div {
   padding: 12px;
   margin: 0 12px;
-  font-size: 19px;
+}
+
+#modal-help div #span-lock-icon,
+#modal-help div #span-unlock-icon {
+  /* display: inline-block; */
+  /* font-size: 15px; */
+  /* letter-spacing: -1px; */
+  /* margin: -2px; */
+  /* padding: -8px; */
+  padding: 4px;
 }
 
 #modal-help div #recurrent-tag-color {
@@ -225,11 +235,24 @@ button {
   font-size: 1.25rem;
   /* background: rebeccapurple; */
   /* background-color: var(--color-link); */
-  background-color: #345990;
+  background-color: #407d6c;
+  border-radius: 3px;
   font-weight: 600;
   -webkit-filter: grayscale(0);
   filter: grayscale(0);
   padding: 0.5rem 3rem;
+}
+
+.btn-lock-unlock-all .btn-icon {
+}
+
+#modal-help.active .btn-text {
+  display: flex;
+}
+
+.btn-lock-unlock-all .btn-text {
+  display: block;
+  font-size: 16px;
 }
 
 .container-page {

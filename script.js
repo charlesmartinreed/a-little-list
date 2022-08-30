@@ -4,6 +4,7 @@ const listItems = document.querySelectorAll(".container-list-item");
 const pageContainer = document.querySelector(".container-page");
 const helpModal = document.querySelector("#modal-help");
 
+const lockUnlockBtn = document.querySelector(".btn-lock-unlock-all");
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
 const searchItemsBtn = document.querySelector("#btn-search-item-list");
 const sortItemsBtn = document.querySelector(".btn-sort-item-list");
@@ -49,6 +50,8 @@ let allItems = [
 ];
 
 // EVENT LISTENERS
+lockUnlockBtn.addEventListener("click", (e) => handleLockBtnClicked(e));
+
 addNewItemBtn.addEventListener("click", (e) => addNewItem(e));
 searchItemsBtn.addEventListener("click", () => handleSearchBtnClicked());
 sortItemsBtn.addEventListener("click", () => handleSortBtnClicked());
@@ -67,6 +70,37 @@ searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 //   if (addModeInput.value === "") return;
 //   if (e.code === "Enter") addNewItem();
 // });
+
+function handleLockBtnClicked(e) {
+  let buttonIcon = e.target;
+  let button = e.target.parentElement;
+
+  if (button.classList.contains("lock-all")) {
+    buttonIcon.textContent = "🔒";
+    handleLockAllItems();
+  }
+
+  if (!button.classList.contains("lock-all")) {
+    buttonIcon.textContent = "🔓";
+    handleUnlockAllItems();
+  }
+
+  button.classList.toggle("lock-all");
+}
+
+function handleLockAllItems() {
+  allItems.forEach((item) => {
+    item.item_is_recurrent = true;
+  });
+  displayItemList(allItems);
+}
+
+function handleUnlockAllItems() {
+  allItems.forEach((item) => {
+    item.item_is_recurrent = false;
+  });
+  displayItemList(allItems);
+}
 
 function handleModal() {
   helpModal.classList.toggle("active");
