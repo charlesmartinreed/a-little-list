@@ -96,6 +96,26 @@ button {
   width: 40px;
 }
 
+.container-item-list .btn-delete-item {
+  cursor: pointer;
+}
+
+.container-items .empty-item-list {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  padding: 1rem;
+  /* background-color: red; */
+}
+
+.container-item-list .btn-delete-item:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
 .container-input-box .btn-add-new-item {
   font-size: 30px;
 }
@@ -243,14 +263,17 @@ button {
   padding: 0.5rem 3rem;
 }
 
-.btn-lock-unlock-all .btn-icon {
+.btn-lock-unlock-all .btn-icon,
+.btn-delete-all .btn-icon {
+  font-size: 20px;
 }
 
 #modal-help.active .btn-text {
   display: flex;
 }
 
-.btn-lock-unlock-all .btn-text {
+.btn-lock-unlock-all .btn-text,
+.btn-delete-all .btn-text {
   display: block;
   font-size: 16px;
 }

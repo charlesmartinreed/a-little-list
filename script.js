@@ -6,6 +6,7 @@ const helpModal = document.querySelector("#modal-help");
 
 const lockUnlockBtn = document.querySelector(".btn-lock-unlock-all");
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
+const deleteAllItemsBtn = document.querySelector(".btn-delete-all");
 const searchItemsBtn = document.querySelector("#btn-search-item-list");
 const sortItemsBtn = document.querySelector(".btn-sort-item-list");
 const helpBtn = document.querySelector(".btn-help");
@@ -51,6 +52,7 @@ let allItems = [
 
 // EVENT LISTENERS
 lockUnlockBtn.addEventListener("click", (e) => handleLockBtnClicked(e));
+deleteAllItemsBtn.addEventListener("click", () => handleDeleteAllBtnClicked());
 
 addNewItemBtn.addEventListener("click", (e) => addNewItem(e));
 searchItemsBtn.addEventListener("click", () => handleSearchBtnClicked());
@@ -66,10 +68,18 @@ addModeInput.addEventListener("keypress", (e) => {
 
 searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 
-// window.addEventListener("keypress", (e) => {
-//   if (addModeInput.value === "") return;
-//   if (e.code === "Enter") addNewItem();
-// });
+window.addEventListener("DOMContentLoaded", () => displayItemList(allItems));
+
+function handleDeleteAllBtnClicked() {
+  let confirm = displayConfirmationModal();
+
+  if (confirm) {
+    allItems = [];
+    displayItemList(allItems);
+  }
+
+  if (!confirm) return;
+}
 
 function handleLockBtnClicked(e) {
   let buttonIcon = e.target;
@@ -246,38 +256,48 @@ function fetchAvgPrice() {
 function displayItemList(itemList) {
   let html = "";
 
-  let arrangedItems = filterAndSortListItems(itemList);
-
-  for (let item of arrangedItems) {
-    let { item_name, item_id, item_avg_price, item_is_recurrent } = item;
-    html += `
-        <div class="${
-          item_is_recurrent
-            ? "container-item-list recurrent"
-            : "container-item-list"
-        }">
-            <div class="list-item" data-item-id="${item_id}">
-              <p class="list-item-title">${item_name}</p>
-              <p class="list-item-price">Average price of <span>$${item_avg_price}</span></p>
-            </div>
-            <div class="list-item-delete">
-            <button class="btn btn-lock-item">${
-              item_is_recurrent ? "🔒" : "🔓"
-            }</button>
-              <button class="btn btn-delete-item" >🗑️</button>
-            </div>
-          </div>
-        `;
+  if (itemList.length === 0) {
+    console.log("item list is emtpy....");
+    html += `<div class="empty-item-list">Your list is currently empty.</div>`;
+    list.innerHTML = html;
+    console.log(listItems);
   }
 
-  list.innerHTML = html;
+  if (itemList.length > 0) {
+    let arrangedItems = filterAndSortListItems(itemList);
 
-  //   add the button listeners here
-  deleteItemBtns = document.querySelectorAll(".btn-delete-item");
-  lockedItemBtns = document.querySelectorAll(".btn-lock-item");
+    for (let item of arrangedItems) {
+      let { item_name, item_id, item_avg_price, item_is_recurrent } = item;
+      html += `
+          <div class="${
+            item_is_recurrent
+              ? "container-item-list recurrent"
+              : "container-item-list"
+          }">
+              <div class="list-item" data-item-id="${item_id}">
+                <p class="list-item-title">${item_name}</p>
+                <p class="list-item-price">Average price of <span>$${item_avg_price}</span></p>
+              </div>
+              <div class="list-item-delete">
+              <button class="btn btn-lock-item">${
+                item_is_recurrent ? "🔒" : "🔓"
+              }</button>
+                <button class="btn btn-delete-item" ${
+                  item_is_recurrent ? "disabled" : ""
+                } >🗑️</button>
+              </div>
+            </div>
+          `;
+    }
 
-  addDeleteBtnListeners();
-  addLockBtnListeners();
+    list.innerHTML = html;
+
+    deleteItemBtns = document.querySelectorAll(".btn-delete-item");
+    lockedItemBtns = document.querySelectorAll(".btn-lock-item");
+
+    addDeleteBtnListeners();
+    addLockBtnListeners();
+  }
 }
 
 function addDeleteBtnListeners() {
@@ -292,4 +312,6 @@ function addLockBtnListeners() {
   );
 }
 
-displayItemList(allItems);
+function displayConfirmationModal() {
+  return confirm(`Are you sure you want to remove all items from your list?`);
+}

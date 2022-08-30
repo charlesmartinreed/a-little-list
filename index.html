@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
     <script defer src="./script.js"></script>
-    <title>A Little List</title>
+    <title>Littlelist</title>
   </head>
   <body>
     <div class="modal modal-help" id="modal-help">
@@ -24,7 +24,9 @@
         Use &uarr;&darr; to sort your list items by price, from lowest to
         highest or, alternatively, highest to lowest.
       </div>
-      <div>Use 🗑️ to remove an item from your list.</div>
+      <div>
+        Use 🗑️ to remove an item from your list or 🗑️ ALL to remove all of them.
+      </div>
       <div>
         <button class="btn-close-modal" id="btn-close-modal">Got it!</button>
       </div>
@@ -52,6 +54,9 @@
           🔍
         </button>
         <button class="btn-ui btn-sort-item-list">&uarr;&darr;</button>
+        <button class="btn-ui btn-delete-all">
+          <span class="btn-icon">🗑️</span> <span class="btn-text">ALL</span>
+        </button>
       </div>
     </div>
   </body>
