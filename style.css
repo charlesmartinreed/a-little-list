@@ -80,9 +80,8 @@ button {
   display: block;
 }
 
-.container-input-box .btn-add-new-item,
-.container-item-list .btn-delete-item,
-.container-item-list .btn-lock-item {
+.container-input-box .btn,
+.container-item-list .btn {
   cursor: pointer;
   outline: none;
   border: none;
@@ -245,6 +244,10 @@ button {
   transform: translate(-50%, -50%) scale(1);
 }
 
+#modal-help.active .btn-text {
+  display: flex;
+}
+
 #modal-help.active div:last-of-type {
   align-self: center;
 }
@@ -271,15 +274,16 @@ button {
   font-size: 20px;
 }
 
-#modal-help.active .btn-text {
-  display: flex;
-}
-
 .btn-lock-unlock-all .btn-text,
 .btn-delete-all .btn-text,
 .btn-undo-delete .btn-text {
   display: block;
   font-size: 16px;
+}
+
+.btn-search-item-list.active {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
 }
 
 .container-page {

@@ -15,6 +15,9 @@ const closeHelpBtn = document.querySelector("#btn-close-modal");
 
 let deleteItemBtns;
 let lockedItemBtns;
+let showNotesBtns;
+
+let itemUIButtons = [];
 
 let inputContainer = document.querySelector(".container-input-box");
 let addModeInput = document.querySelector("#input-add-item");
@@ -28,24 +31,28 @@ let allItems = [
     item_id: returnItemID(),
     item_avg_price: "3.99",
     item_is_recurrent: true,
+    item_notes: "Test note entry",
   },
   {
     item_name: "bread",
     item_id: returnItemID(),
     item_avg_price: "5.99",
     item_is_recurrent: true,
+    item_notes: "Test note entry",
   },
   {
     item_name: "vodka",
     item_id: returnItemID(),
     item_avg_price: "17.49",
     item_is_recurrent: false,
+    item_notes: "Test note entry",
   },
   {
     item_name: "cake",
     item_id: returnItemID(),
     item_avg_price: "12.49",
     item_is_recurrent: false,
+    item_notes: "Test note entry",
   },
 ];
 let deletedItems = [];
@@ -191,6 +198,7 @@ function filterAndSortListItems(messyArr) {
 function handleSearchBtnClicked() {
   inputContainer.classList.toggle("add-mode");
   inputContainer.classList.toggle("search-mode");
+  searchItemsBtn.classList.toggle("active");
 }
 
 function searchItemsList(e) {
@@ -274,6 +282,22 @@ function updateItemsList(newItemObj) {
   displayItemList(allItems);
 }
 
+function updateItemNotes(e) {
+  // window.alert for now, need to dig into working with <dialog> element
+  // eventually this will bring up a textarea in a modal that can be edited, if desired.
+
+  let itemID =
+    e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
+  let [{ item_notes }] = allItems.filter((item) => item.item_id === itemID);
+
+  let updatedNotes = window.prompt(
+    "Add some notes about your item",
+    item_notes
+  );
+
+  allItems.find((item) => item.item_id === itemID).item_notes = updatedNotes;
+}
+
 function fetchAvgPrice() {
   // PLACEHOLDER IMPLEMENTATION
   let dollars = String(Math.round(Math.random() * 20));
@@ -309,6 +333,7 @@ function displayItemList(itemList) {
                 <p class="list-item-price">Average price of <span>$${item_avg_price}</span></p>
               </div>
               <div class="list-item-delete">
+              <button class="btn btn-show-notes">📝</button>
               <button class="btn btn-lock-item">${
                 item_is_recurrent ? "🔒" : "🔓"
               }</button>
@@ -324,10 +349,25 @@ function displayItemList(itemList) {
 
     deleteItemBtns = document.querySelectorAll(".btn-delete-item");
     lockedItemBtns = document.querySelectorAll(".btn-lock-item");
+    showNotesBtns = document.querySelectorAll(".btn-show-notes");
 
-    addDeleteBtnListeners();
-    addLockBtnListeners();
+    // addDeleteBtnListeners();
+    // addLockBtnListeners();
+    // addNoteBtnListeners();
+    addListenersToUIButtons(deleteItemBtns, deleteItem);
+    addListenersToUIButtons(lockedItemBtns, toggleRecurrentItem);
+    addListenersToUIButtons(showNotesBtns, updateItemNotes);
   }
+}
+
+function addListenersToUIButtons(buttons, cb) {
+  buttons.forEach((btn) => btn.addEventListener("click", (e) => cb(e)));
+}
+
+function addNoteBtnListeners() {
+  showNotesBtns.forEach((noteBtn) =>
+    noteBtn.addEventListener("click", (e) => updateItemNotes(e))
+  );
 }
 
 function addDeleteBtnListeners() {
