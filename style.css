@@ -111,7 +111,9 @@ button {
   /* background-color: red; */
 }
 
-.container-item-list .btn-delete-item:disabled {
+.container-item-list .btn-delete-item:disabled,
+.btn-undo-delete:disabled,
+.btn-delete-all:disabled {
   opacity: 0.2;
   cursor: not-allowed;
 }
@@ -264,7 +266,8 @@ button {
 }
 
 .btn-lock-unlock-all .btn-icon,
-.btn-delete-all .btn-icon {
+.btn-delete-all .btn-icon,
+.btn-undo-delete .btn-icon {
   font-size: 20px;
 }
 
@@ -273,7 +276,8 @@ button {
 }
 
 .btn-lock-unlock-all .btn-text,
-.btn-delete-all .btn-text {
+.btn-delete-all .btn-text,
+.btn-undo-delete .btn-text {
   display: block;
   font-size: 16px;
 }

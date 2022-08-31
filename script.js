@@ -7,6 +7,7 @@ const helpModal = document.querySelector("#modal-help");
 const lockUnlockBtn = document.querySelector(".btn-lock-unlock-all");
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
 const deleteAllItemsBtn = document.querySelector(".btn-delete-all");
+const undoDeleteBtn = document.querySelector(".btn-undo-delete");
 const searchItemsBtn = document.querySelector("#btn-search-item-list");
 const sortItemsBtn = document.querySelector(".btn-sort-item-list");
 const helpBtn = document.querySelector(".btn-help");
@@ -20,8 +21,6 @@ let addModeInput = document.querySelector("#input-add-item");
 let searchModeInput = document.querySelector("#input-search-item");
 
 let sortByDescending = true;
-
-let recentlyRemovedItems = [];
 
 let allItems = [
   {
@@ -49,10 +48,12 @@ let allItems = [
     item_is_recurrent: false,
   },
 ];
+let deletedItems = [];
 
 // EVENT LISTENERS
 lockUnlockBtn.addEventListener("click", (e) => handleLockBtnClicked(e));
 deleteAllItemsBtn.addEventListener("click", () => handleDeleteAllBtnClicked());
+undoDeleteBtn.addEventListener("click", () => handleUndoBtnClicked());
 
 addNewItemBtn.addEventListener("click", (e) => addNewItem(e));
 searchItemsBtn.addEventListener("click", () => handleSearchBtnClicked());
@@ -68,17 +69,51 @@ addModeInput.addEventListener("keypress", (e) => {
 
 searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 
-window.addEventListener("DOMContentLoaded", () => displayItemList(allItems));
+window.addEventListener("DOMContentLoaded", () => {
+  displayItemList(allItems);
+});
 
 function handleDeleteAllBtnClicked() {
   let confirm = displayConfirmationModal();
 
   if (confirm) {
+    // could also just, you know, check that the item isn't already in deleted to avoid duplicate entries, but... lazy
+    // allItems.forEach((item) => {
+    //   moveToDeleteItems(item);
+    // });
+    moveToDeleteItems(allItems);
+
     allItems = [];
     displayItemList(allItems);
   }
 
   if (!confirm) return;
+}
+
+function moveToDeleteItems(itemObj) {
+  if (itemObj.length > 1) {
+    deletedItems = [...deletedItems, itemObj];
+  }
+
+  if (itemObj.length === 1) {
+    deletedItems = [...deletedItems, ...itemObj];
+  }
+}
+
+function handleUndoBtnClicked() {
+  if (deletedItems.length >= 1) {
+    let lastDeleted = deletedItems.pop();
+
+    if (Array.isArray(lastDeleted)) {
+      allItems.push(...lastDeleted);
+    } else {
+      allItems.push(lastDeleted);
+    }
+
+    displayItemList(allItems);
+  }
+
+  if (deletedItems.length === 0) return;
 }
 
 function handleLockBtnClicked(e) {
@@ -119,7 +154,6 @@ function handleModal() {
 
 function handleSortBtnClicked() {
   sortByDescending = !sortByDescending;
-  console.log(sortByDescending);
   displayItemList(allItems);
 }
 
@@ -170,20 +204,15 @@ function searchItemsList(e) {
   if (input !== "" && inputLen >= 1) {
     let matches = allItems.filter((item) => {
       if (item.item_name.slice(0, inputLen) === input) {
-        // console.log(item.item_name.slice(0, inputLen));
         return item;
       }
     });
 
     displayItemList(matches);
   }
-  //a,ab
 }
 
 function addNewItem(e) {
-  //   e.preventDefault();
-
-  //   let inputValue = e.target.previousElementSibling.value;
   let itemValue = addModeInput.value;
   let itemObject;
 
@@ -215,11 +244,13 @@ function deleteItem(e) {
   let deletedItemId =
     e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
 
-  let updatedItemsList = allItems.filter(
-    ({ item_id }) => item_id !== deletedItemId
-  );
+  let deletedItem = allItems.filter(({ item_id }) => item_id === deletedItemId);
 
-  displayItemList(updatedItemsList);
+  moveToDeleteItems(deletedItem);
+
+  allItems = allItems.filter(({ item_id }) => item_id !== deletedItemId);
+
+  displayItemList(allItems);
 }
 
 function toggleRecurrentItem(e) {
@@ -239,7 +270,6 @@ function toggleRecurrentItem(e) {
 
 function updateItemsList(newItemObj) {
   allItems.push(newItemObj);
-  // console.log("new items list", allItems);
 
   displayItemList(allItems);
 }
@@ -254,13 +284,13 @@ function fetchAvgPrice() {
 }
 
 function displayItemList(itemList) {
+  checkUIButtonsState();
+
   let html = "";
 
   if (itemList.length === 0) {
-    console.log("item list is emtpy....");
     html += `<div class="empty-item-list">Your list is currently empty.</div>`;
     list.innerHTML = html;
-    console.log(listItems);
   }
 
   if (itemList.length > 0) {
@@ -310,6 +340,11 @@ function addLockBtnListeners() {
   lockedItemBtns.forEach((lockBtn) =>
     lockBtn.addEventListener("click", (e) => toggleRecurrentItem(e))
   );
+}
+
+function checkUIButtonsState() {
+  undoDeleteBtn.disabled = deletedItems.length > 0 ? "" : "disabled";
+  deleteAllItemsBtn.disabled = allItems.length === 0 ? "disabled" : "";
 }
 
 function displayConfirmationModal() {
