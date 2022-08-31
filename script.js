@@ -90,9 +90,14 @@ function handleDeleteAllBtnClicked() {
     // allItems.forEach((item) => {
     //   moveToDeleteItems(item);
     // });
-    moveToDeleteItems(allItems);
+    let deletedItems = allItems.filter(
+      ({ item_is_recurrent }) => !item_is_recurrent
+    );
 
-    allItems = [];
+    moveToDeleteItems(deletedItems);
+
+    allItems = allItems.filter(({ item_is_recurrent }) => item_is_recurrent);
+
     displayItemList(allItems);
   }
 
