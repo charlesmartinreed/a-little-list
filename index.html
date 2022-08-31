@@ -10,11 +10,20 @@
   </head>
   <body>
     <!-- test dialog modal -->
-    <dialog class="dialog notes-dialog" id="notes-dialog">
-      <textarea name="" id="" cols="30" rows="10"></textarea>
-      <button id="cancel" type="reset"></button>
-    </dialog>
-    <!-- test dialog modal -->
+    <div class="modal modal-info" id="modal-info">
+      <div>
+        <p
+          class="modal-info-msg"
+          id="modal-info-msg"
+          data-msg="Are you sure you want to delete all items?"
+        ></p>
+      </div>
+
+      <div>
+        <button class="btn btn-modal-confirm">I'm Sure!</button>
+        <button class="btn btn-modal-cancel">Never mind!</button>
+      </div>
+    </div>
     <div class="modal modal-help" id="modal-help">
       <div>
         Have an item you just can't live without? Use 🔒 to tag it as
@@ -57,7 +66,10 @@
         <button class="btn-ui btn-search-item-list" id="btn-search-item-list">
           🔍
         </button>
-        <button class="btn-ui btn-sort-item-list">&uarr;&darr;</button>
+        <button class="btn-ui btn-sort-item-list">
+          <span class="up-arrow">&uarr;</span
+          ><span class="down-arrow">&darr;</span>
+        </button>
         <button class="btn-ui btn-lock-unlock-all lock-all">
           <span class="btn-icon">🔒</span> <span class="btn-text">ALL</span>
         </button>

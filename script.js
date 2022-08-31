@@ -3,6 +3,7 @@ const listItems = document.querySelectorAll(".container-list-item");
 
 const pageContainer = document.querySelector(".container-page");
 const helpModal = document.querySelector("#modal-help");
+const infoModal = document.querySelector("#modal-info");
 const dialog = document.querySelector("#notes-dialog");
 
 const lockUnlockBtn = document.querySelector(".btn-lock-unlock-all");
@@ -68,8 +69,8 @@ addNewItemBtn.addEventListener("click", (e) => addNewItem(e));
 searchItemsBtn.addEventListener("click", () => handleSearchBtnClicked());
 sortItemsBtn.addEventListener("click", () => handleSortBtnClicked());
 
-helpBtn.addEventListener("click", () => handleModal());
-closeHelpBtn.addEventListener("click", () => handleModal());
+helpBtn.addEventListener("click", () => handleModal(helpModal));
+closeHelpBtn.addEventListener("click", () => handleModal(helpModal));
 
 addModeInput.addEventListener("keypress", (e) => {
   if (e.value === "") return;
@@ -83,13 +84,12 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function handleDeleteAllBtnClicked() {
-  let confirm = displayConfirmationModal();
+  handleModal(infoModal);
 
-  if (confirm) {
-    // could also just, you know, check that the item isn't already in deleted to avoid duplicate entries, but... lazy
-    // allItems.forEach((item) => {
-    //   moveToDeleteItems(item);
-    // });
+  let confirmBtn = infoModal.querySelector(".btn-modal-confirm");
+  let cancelBtn = infoModal.querySelector(".btn-modal-cancel");
+
+  confirmBtn.addEventListener("click", () => {
     let deletedItems = allItems.filter(
       ({ item_is_recurrent }) => !item_is_recurrent
     );
@@ -98,10 +98,13 @@ function handleDeleteAllBtnClicked() {
 
     allItems = allItems.filter(({ item_is_recurrent }) => item_is_recurrent);
 
+    handleDeleteAllBtnClicked();
     displayItemList(allItems);
-  }
+  });
 
-  if (!confirm) return;
+  cancelBtn.addEventListener("click", () => {
+    handleDeleteAllBtnClicked();
+  });
 }
 
 function moveToDeleteItems(itemObj) {
@@ -161,8 +164,8 @@ function handleUnlockAllItems() {
   displayItemList(allItems);
 }
 
-function handleModal() {
-  helpModal.classList.toggle("active");
+function handleModal(modal) {
+  modal.classList.toggle("active");
   pageContainer.classList.toggle("modal-active");
 }
 
@@ -172,17 +175,9 @@ function handleSortBtnClicked() {
 }
 
 function filterAndSortListItems(messyArr) {
-  // let recurrentItems = messyArr
-  //   .filter(({ item_is_recurrent }) => item_is_recurrent)
-  //   .sort((a, b) => a.item_avg_price - b.item_avg_price);
-
   let recurrentItems = messyArr
     .filter(({ item_is_recurrent }) => item_is_recurrent)
     .sort(sortOperation(sortByDescending));
-
-  // let novelItems = messyArr
-  //   .filter(({ item_is_recurrent }) => !item_is_recurrent)
-  //   .sort((a, b) => a.item_avg_price - b.item_avg_price);
 
   let novelItems = messyArr
     .filter(({ item_is_recurrent }) => !item_is_recurrent)
@@ -272,9 +267,6 @@ function toggleRecurrentItem(e) {
   let itemId =
     e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
 
-  //   let [item] = allItems.filter(({ item_id }) => item_id === itemId);
-  //   item.item_is_recurrent = !item.item_is_recurrent;
-
   allItems.map((item) => {
     if (item.item_id === itemId)
       item.item_is_recurrent = !item.item_is_recurrent;
@@ -314,7 +306,6 @@ function updateItemNotes(updateNote, itemObjID) {
 }
 
 function fetchAvgPrice() {
-  // PLACEHOLDER IMPLEMENTATION
   let dollars = String(Math.round(Math.random() * 20));
   let cents = String(Math.round(Math.random() * 99));
   let centsAdjusted = cents >= 10 ? cents : `0${cents}`;
@@ -375,15 +366,10 @@ function displayItemList(itemList) {
     deleteItemBtns = document.querySelectorAll(".btn-delete-item");
     lockedItemBtns = document.querySelectorAll(".btn-lock-item");
     showNotesBtns = document.querySelectorAll(".btn-show-notes");
-    // submitNotesBtns = document.querySelectorAll(".btn-list-notes-submit");
 
-    // addDeleteBtnListeners();
-    // addLockBtnListeners();
-    // addNoteBtnListeners();
     addListenersToUIButtons(deleteItemBtns, deleteItem);
     addListenersToUIButtons(lockedItemBtns, toggleRecurrentItem);
     addListenersToUIButtons(showNotesBtns, toggleItemNotes);
-    // addListenersToUIButtons(submitNotesBtns, closeNotes);
   }
 }
 
@@ -391,29 +377,15 @@ function addListenersToUIButtons(buttons, cb) {
   buttons.forEach((btn) => btn.addEventListener("click", (e) => cb(e)));
 }
 
-// function addNoteBtnListeners() {
-//   showNotesBtns.forEach((noteBtn) =>
-//     noteBtn.addEventListener("click", (e) => toggleItemNotes(e))
-//   );
-// }
-
-// function addDeleteBtnListeners() {
-//   deleteItemBtns.forEach((deleteBtn) =>
-//     deleteBtn.addEventListener("click", (e) => deleteItem(e))
-//   );
-// }
-
-// function addLockBtnListeners() {
-//   lockedItemBtns.forEach((lockBtn) =>
-//     lockBtn.addEventListener("click", (e) => toggleRecurrentItem(e))
-//   );
-// }
-
 function checkUIButtonsState() {
   undoDeleteBtn.disabled = deletedItems.length > 0 ? "" : "disabled";
   deleteAllItemsBtn.disabled = allItems.length === 0 ? "disabled" : "";
-}
 
-function displayConfirmationModal() {
-  return confirm(`Are you sure you want to remove all items from your list?`);
+  sortItemsBtn
+    .querySelector("span.up-arrow")
+    .classList.toggle("active", !sortByDescending);
+
+  sortItemsBtn
+    .querySelector("span.down-arrow")
+    .classList.toggle("active", sortByDescending);
 }
