@@ -3,6 +3,7 @@ const listItems = document.querySelectorAll(".container-list-item");
 
 const pageContainer = document.querySelector(".container-page");
 const helpModal = document.querySelector("#modal-help");
+const dialog = document.querySelector("#notes-dialog");
 
 const lockUnlockBtn = document.querySelector(".btn-lock-unlock-all");
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
@@ -16,6 +17,7 @@ const closeHelpBtn = document.querySelector("#btn-close-modal");
 let deleteItemBtns;
 let lockedItemBtns;
 let showNotesBtns;
+let submitNotesBtns;
 
 let itemUIButtons = [];
 
@@ -282,20 +284,28 @@ function updateItemsList(newItemObj) {
   displayItemList(allItems);
 }
 
-function updateItemNotes(e) {
-  // window.alert for now, need to dig into working with <dialog> element
-  // eventually this will bring up a textarea in a modal that can be edited, if desired.
-
+function toggleItemNotes(e) {
   let itemID =
     e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
   let [{ item_notes }] = allItems.filter((item) => item.item_id === itemID);
 
-  let updatedNotes = window.prompt(
-    "Add some notes about your item",
-    item_notes
-  );
+  let [textbox] = Array.from(
+    document.querySelectorAll(".container-item-list-notes")
+  ).filter((textbox) => textbox.getAttribute("data-item-id") === itemID);
 
-  allItems.find((item) => item.item_id === itemID).item_notes = updatedNotes;
+  textbox.classList.toggle("active");
+
+  let textarea = textbox.children[0];
+  let submitBtn = textbox.children[1];
+
+  submitBtn.addEventListener("click", () => {
+    updateItemNotes(textarea.value, itemID);
+    textbox.classList.remove("active");
+  });
+}
+
+function updateItemNotes(updateNote, itemObjID) {
+  allItems.find((item) => item.item_id === itemObjID).item_notes = updateNote;
 }
 
 function fetchAvgPrice() {
@@ -321,7 +331,13 @@ function displayItemList(itemList) {
     let arrangedItems = filterAndSortListItems(itemList);
 
     for (let item of arrangedItems) {
-      let { item_name, item_id, item_avg_price, item_is_recurrent } = item;
+      let {
+        item_name,
+        item_id,
+        item_avg_price,
+        item_is_recurrent,
+        item_notes,
+      } = item;
       html += `
           <div class="${
             item_is_recurrent
@@ -342,6 +358,10 @@ function displayItemList(itemList) {
                 } >🗑️</button>
               </div>
             </div>
+            <div class="container-item-list-notes" data-item-id="${item_id}">
+            <textarea class="textbox list-note-textbox" id="list-note-textbox">${item_notes}</textarea>
+            <button class="btn btn-list-notes-submit" id="btn-list-notes-submit">✅</button>
+            </div>
           `;
     }
 
@@ -350,13 +370,15 @@ function displayItemList(itemList) {
     deleteItemBtns = document.querySelectorAll(".btn-delete-item");
     lockedItemBtns = document.querySelectorAll(".btn-lock-item");
     showNotesBtns = document.querySelectorAll(".btn-show-notes");
+    // submitNotesBtns = document.querySelectorAll(".btn-list-notes-submit");
 
     // addDeleteBtnListeners();
     // addLockBtnListeners();
     // addNoteBtnListeners();
     addListenersToUIButtons(deleteItemBtns, deleteItem);
     addListenersToUIButtons(lockedItemBtns, toggleRecurrentItem);
-    addListenersToUIButtons(showNotesBtns, updateItemNotes);
+    addListenersToUIButtons(showNotesBtns, toggleItemNotes);
+    // addListenersToUIButtons(submitNotesBtns, closeNotes);
   }
 }
 
@@ -364,23 +386,23 @@ function addListenersToUIButtons(buttons, cb) {
   buttons.forEach((btn) => btn.addEventListener("click", (e) => cb(e)));
 }
 
-function addNoteBtnListeners() {
-  showNotesBtns.forEach((noteBtn) =>
-    noteBtn.addEventListener("click", (e) => updateItemNotes(e))
-  );
-}
+// function addNoteBtnListeners() {
+//   showNotesBtns.forEach((noteBtn) =>
+//     noteBtn.addEventListener("click", (e) => toggleItemNotes(e))
+//   );
+// }
 
-function addDeleteBtnListeners() {
-  deleteItemBtns.forEach((deleteBtn) =>
-    deleteBtn.addEventListener("click", (e) => deleteItem(e))
-  );
-}
+// function addDeleteBtnListeners() {
+//   deleteItemBtns.forEach((deleteBtn) =>
+//     deleteBtn.addEventListener("click", (e) => deleteItem(e))
+//   );
+// }
 
-function addLockBtnListeners() {
-  lockedItemBtns.forEach((lockBtn) =>
-    lockBtn.addEventListener("click", (e) => toggleRecurrentItem(e))
-  );
-}
+// function addLockBtnListeners() {
+//   lockedItemBtns.forEach((lockBtn) =>
+//     lockBtn.addEventListener("click", (e) => toggleRecurrentItem(e))
+//   );
+// }
 
 function checkUIButtonsState() {
   undoDeleteBtn.disabled = deletedItems.length > 0 ? "" : "disabled";

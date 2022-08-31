@@ -9,15 +9,21 @@
     <title>Littlelist</title>
   </head>
   <body>
+    <!-- test dialog modal -->
+    <dialog class="dialog notes-dialog" id="notes-dialog">
+      <textarea name="" id="" cols="30" rows="10"></textarea>
+      <button id="cancel" type="reset"></button>
+    </dialog>
+    <!-- test dialog modal -->
     <div class="modal modal-help" id="modal-help">
       <div>
         Have an item you just can't live without? Use 🔒 to tag it as
         <span id="recurrent-tag-color">recurring</span> and ensure it stays in
         your list, week after week.
       </div>
+      <div>Use 📝 to add some notes and reminders about your item.</div>
       <div>
-        You can also use 🔒ALL or 🔓ALL to lock or unlock all of the list items
-        at once.
+        Use 🔒ALL or 🔓ALL to lock or unlock all of the list items at once.
       </div>
       <div>Use 🔍 to search through your currently added items.</div>
       <div>
@@ -27,6 +33,7 @@
       <div>
         Use 🗑️ to remove an item from your list or 🗑️ ALL to remove all of them.
       </div>
+      <div>Did you accidentally delete an item? Use ♻️ to recover it!</div>
       <div>
         <button class="btn-close-modal" id="btn-close-modal">Got it!</button>
       </div>
