@@ -1,3 +1,5 @@
+import { fetchWebSiteResults } from "./utils/utils.js";
+
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
 
@@ -32,37 +34,35 @@ let allItems = [
   {
     item_name: "pickles",
     item_id: returnItemID(),
-    item_price_results: [],
-    item_avg_price: "3.99",
+    item_avg_price: "",
     item_is_recurrent: true,
     item_notes: "Test note entry",
   },
-  {
-    item_name: "bread",
-    item_id: returnItemID(),
-    item_price_results: [],
-    item_avg_price: "5.99",
-    item_is_recurrent: true,
-    item_notes: "Test note entry",
-  },
+  // {
+  //   item_name: "bread",
+  //   item_id: returnItemID(),
+  //   item_avg_price: "",
+  //   item_is_recurrent: true,
+  //   item_notes: "Test note entry",
+  // },
   {
     item_name: "vodka",
     item_id: returnItemID(),
-    item_price_results: [],
-    item_avg_price: "17.49",
+    item_avg_price: "",
     item_is_recurrent: false,
     item_notes: "Test note entry",
   },
-  {
-    item_name: "cake",
-    item_id: returnItemID(),
-    item_price_results: [],
-    item_avg_price: "12.49",
-    item_is_recurrent: false,
-    item_notes: "Test note entry",
-  },
+  // {
+  //   item_name: "cake",
+  //   item_id: returnItemID(),
+  //   item_avg_price: "",
+  //   item_is_recurrent: false,
+  //   item_notes: "Test note entry",
+  // },
 ];
 let deletedItems = [];
+
+// grab the price data, if possible
 
 // EVENT LISTENERS
 lockUnlockBtn.addEventListener("click", (e) => handleLockBtnClicked(e));
@@ -86,6 +86,23 @@ searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 window.addEventListener("DOMContentLoaded", () => {
   displayItemList(allItems);
 });
+
+async function updateItemPrices() {
+  if (allItems.length > 0) {
+    allItems = allItems.map((item) => {
+      let { item_avg_price } = item;
+      if (item_avg_price === "") {
+        let { avgPrice } = fetchWebSiteResults(item);
+        if (avgPrice) {
+          item_avg_price = avgPrice;
+        } else {
+          displayItemList(allItems);
+          return;
+        }
+      }
+    });
+  }
+}
 
 function handleDeleteAllBtnClicked() {
   handleModal(infoModal);
@@ -179,13 +196,20 @@ function handleSortBtnClicked() {
 }
 
 function filterAndSortListItems(messyArr) {
-  let recurrentItems = messyArr
-    .filter(({ item_is_recurrent }) => item_is_recurrent)
-    .sort(sortOperation(sortByDescending));
+  let recurrentItems = messyArr.filter(
+    ({ item_is_recurrent }) => item_is_recurrent
+  );
+  let novelItems = messyArr.filter(
+    ({ item_is_recurrent }) => !item_is_recurrent
+  );
 
-  let novelItems = messyArr
-    .filter(({ item_is_recurrent }) => !item_is_recurrent)
-    .sort(sortOperation(sortByDescending));
+  if (recurrentItems.length >= 1) {
+    recurrentItems = recurrentItems.sort(sortOperation(sortByDescending));
+  }
+
+  if (novelItems.length >= 1) {
+    novelItems = novelItems.sort(sortOperation(sortByDescending));
+  }
 
   function sortOperation(direction, sortable) {
     switch (direction) {
@@ -393,35 +417,3 @@ function checkUIButtonsState() {
     .querySelector("span.down-arrow")
     .classList.toggle("active", sortByDescending);
 }
-
-// walmart crawler notes
-// when window page loads, if there are items:
-// create an array of prices for each item
-// only pulling from the first page of results, as this isn't a production app per se
-
-// parseURL : walmart.com/search?q=${item_name}
-
-// grab the results div: let itemDivs = Array.from(document.querySelectorAll('div')).filter((div) => div.classList.contains('b--near-white'));
-// check the name of the item, if name contains item_name, keep crawling, if not, return: let itemName = itemDivs[1].querySelector('a span').textContent;
-// grab the price : let itemPrice = itemDivs[1].querySelector('div.lh-copy')
-// add each price to an array and then copy that to item object's persistent prices array
-
-/*
-ADDITIONAL CRAWLER NOTES
-walmart results breakdown
-
-mb1 ph1 pa0-xl bb b--near-white w-25
-item begins with
-div with data-item-id=""
- -> a with link-identifier="" (optional?)
- -> span with class="w_CR" textContents contains ${item_name}
-
-... children ...
-
-div with data-automation-id="product-price"
- -> span with class="w_CR"
-   -> textContent should contain somethng like 'current price $0.20'
-
-
-
-*/

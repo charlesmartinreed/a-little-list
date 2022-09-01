@@ -1,36 +1,51 @@
-import { BSONSymbol } from "bson";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import router from "express";
-import { rmSync } from "fs";
 import fetch from "node-fetch";
-const app = router();
+import { load } from "cheerio";
 
-const PORT = 6500;
+import express from "express";
+import axios from "axios";
+import * as cors_proxy from "cors-anywhere";
 
-app.get("/", async (req, res) => {
-  let result = await fetchWebsiteResult("https://www.github.com/");
+const app = express();
 
-  if (result) {
-    res.send(result);
-  } else {
-    res.send("Unable to fetch page results");
-  }
+const HOST = process.env.HOST || "0.0.0.0";
+const PORT = process.env.SERVER_PORT || 6500;
 
-  // res.send(fetchWebsiteResult("https://www.github.com/"));
-  // res.send("hello world");
-});
+// http://localhost:6500/https://www.walmart.com/search?q=pickles
 
-const fetchWebsiteResult = async (URL) => {
-  try {
-    const res = await fetch(URL);
-    const body = await res.text();
-    return body;
-  } catch (err) {
-    console.error(err);
-    return undefined;
-  }
-};
+let proxy = cors_proxy
+  .createServer({
+    originWhitelist: [],
+    requireHeader: ["origin", "x-requested-with"],
+    removeHeaders: ["cookie", "cookie2"],
+  })
+  .listen(PORT, HOST, async (req, res) => {
+    console.log(`Now running CORS Anywhere on ${HOST}:${PORT}`);
+  });
 
-app.listen(PORT, () => console.log(`server now running on PORT ${PORT}`));
+// grab the results div: let itemDivs = Array.from(document.querySelectorAll('div')).filter((div) => div.classList.contains('b--near-white'));
+// check the name of the item, if name contains item_name, keep crawling, if not, return: let itemName = itemDivs[1].querySelector('a span').textContent;
+// grab the price : let itemPrice = itemDivs[1].querySelector('div.lh-copy')
+// add each price to an array and then copy that to item object's persistent prices array
+
+/*
+ADDITIONAL CRAWLER NOTES
+walmart results breakdown
+
+mb1 ph1 pa0-xl bb b--near-white w-25
+item begins with
+div with data-item-id=""
+ -> a with link-identifier="" (optional?)
+ -> span with class="w_CR" textContents contains ${item_name}
+
+... children ...
+
+div with data-automation-id="product-price"
+ -> span with class="w_CR"
+   -> textContent should contain somethng like 'current price $0.20'
+
+
+
+*/
