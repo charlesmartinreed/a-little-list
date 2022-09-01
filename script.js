@@ -32,6 +32,7 @@ let allItems = [
   {
     item_name: "pickles",
     item_id: returnItemID(),
+    item_price_results: [],
     item_avg_price: "3.99",
     item_is_recurrent: true,
     item_notes: "Test note entry",
@@ -39,6 +40,7 @@ let allItems = [
   {
     item_name: "bread",
     item_id: returnItemID(),
+    item_price_results: [],
     item_avg_price: "5.99",
     item_is_recurrent: true,
     item_notes: "Test note entry",
@@ -46,6 +48,7 @@ let allItems = [
   {
     item_name: "vodka",
     item_id: returnItemID(),
+    item_price_results: [],
     item_avg_price: "17.49",
     item_is_recurrent: false,
     item_notes: "Test note entry",
@@ -53,6 +56,7 @@ let allItems = [
   {
     item_name: "cake",
     item_id: returnItemID(),
+    item_price_results: [],
     item_avg_price: "12.49",
     item_is_recurrent: false,
     item_notes: "Test note entry",
@@ -389,3 +393,35 @@ function checkUIButtonsState() {
     .querySelector("span.down-arrow")
     .classList.toggle("active", sortByDescending);
 }
+
+// walmart crawler notes
+// when window page loads, if there are items:
+// create an array of prices for each item
+// only pulling from the first page of results, as this isn't a production app per se
+
+// parseURL : walmart.com/search?q=${item_name}
+
+// grab the results div: let itemDivs = Array.from(document.querySelectorAll('div')).filter((div) => div.classList.contains('b--near-white'));
+// check the name of the item, if name contains item_name, keep crawling, if not, return: let itemName = itemDivs[1].querySelector('a span').textContent;
+// grab the price : let itemPrice = itemDivs[1].querySelector('div.lh-copy')
+// add each price to an array and then copy that to item object's persistent prices array
+
+/*
+ADDITIONAL CRAWLER NOTES
+walmart results breakdown
+
+mb1 ph1 pa0-xl bb b--near-white w-25
+item begins with
+div with data-item-id=""
+ -> a with link-identifier="" (optional?)
+ -> span with class="w_CR" textContents contains ${item_name}
+
+... children ...
+
+div with data-automation-id="product-price"
+ -> span with class="w_CR"
+   -> textContent should contain somethng like 'current price $0.20'
+
+
+
+*/
