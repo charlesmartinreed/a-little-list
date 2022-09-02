@@ -4,91 +4,15 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css" />
-    <script defer src="./script.js" type="module"></script>
+    <link rel="stylesheet" href="./css/style.css" />
     <title>Littlelist</title>
   </head>
   <body>
-    <!-- test dialog modal -->
-    <div class="modal modal-info" id="modal-info">
-      <div>
-        <p
-          class="modal-info-msg"
-          id="modal-info-msg"
-          data-msg="Are you sure you want to delete all items?"
-        ></p>
-      </div>
-
-      <div>
-        <button class="btn btn-modal-confirm">I'm Sure!</button>
-        <button class="btn btn-modal-cancel">Never mind!</button>
-      </div>
-    </div>
-    <div class="modal modal-help" id="modal-help">
-      <div>
-        Have an item you just can't live without? Use 🔒 to tag it as
-        <span id="recurrent-tag-color">recurring</span> and ensure it stays in
-        your list, week after week.
-      </div>
-      <div>
-        Use 📝 to add some notes and reminders about your item and ✅ to save
-        your changes.
-      </div>
-      <div>
-        Use 🔒ALL or 🔓ALL to lock or unlock all of the list items at once.
-      </div>
-      <div>Use 🔍 to search through your currently added items.</div>
-      <div>
-        Use &uarr;&darr; to sort your list items by price, from lowest to
-        highest or, alternatively, highest to lowest.
-      </div>
-      <div>
-        Use 🗑️ to remove an item from your list or 🗑️ ALL to remove all of them.
-      </div>
-      <div>Did you accidentally delete an item? Use ♻️ to recover it!</div>
-      <div>
-        <small
-          >Displayed prices are aggregated from Walmart.com search results, at
-          page load.</small
-        >
-      </div>
-      <div>
-        <button class="btn-close-modal" id="btn-close-modal">Got it!</button>
-      </div>
-    </div>
-    <div class="container-page">
-      <div class="container-items">
-        <!-- dynamically generated in JS -->
-      </div>
-      <div class="container-input-box add-mode">
-        <input
-          type="text"
-          id="input-search-item"
-          placeholder="Search your list"
-        />
-        <input type="text" id="input-add-item" placeholder="Add a new item" />
-        <button class="btn btn-add-new-item">+</button>
-      </div>
-      <div class="container-ui-buttons">
-        <button class="btn-ui btn-help">❔</button>
-
-        <button class="btn-ui btn-search-item-list" id="btn-search-item-list">
-          🔍
-        </button>
-        <button class="btn-ui btn-sort-item-list">
-          <span class="up-arrow">&uarr;</span
-          ><span class="down-arrow">&darr;</span>
-        </button>
-        <button class="btn-ui btn-lock-unlock-all lock-all">
-          <span class="btn-icon">🔒</span> <span class="btn-text">ALL</span>
-        </button>
-        <button class="btn-ui btn-delete-all">
-          <span class="btn-icon">🗑️</span> <span class="btn-text">ALL</span>
-        </button>
-        <button class="btn-ui btn-undo-delete">
-          <span class="btn-icon">♻️</span>
-          <span class="btn-text">UNDO</span>
-        </button>
+    <div class="cta cta-landing-page" id="cta-landing-page">
+      <h1 class="cta-header">Littlelist</h1>
+      <div class="cta-buttons">
+        <button class="btn btn-login" id="btn-login">Log in</button>
+        <button class="btn btn-signup" id="btn-signup">Sign up</button>
       </div>
     </div>
   </body>

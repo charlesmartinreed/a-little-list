@@ -1,4 +1,4 @@
-import { fetchWebSiteResults } from "./utils/utils.js";
+import { fetchWebSiteResults } from "../utils/utils.js";
 
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
