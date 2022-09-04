@@ -113,6 +113,7 @@ button {
 #btn-login:focus,
 #btn-signup:focus {
   transform: scale(1.1);
+  outline: auto;
 }
 
 #btn-login:hover,
