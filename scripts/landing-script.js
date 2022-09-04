@@ -32,6 +32,7 @@ let emojiIcons = [
 function renderEmojiContainer() {
   let [icon, text] = returnRandomEmojiArr();
   let currentIcon = icon.innerText;
+
   if (icon === currentIcon) {
     [icon, text] = renderEmojiContainer();
   }
@@ -51,14 +52,13 @@ function renderEmojiContainer() {
   emojiDiv.appendChild(iconDiv);
   emojiDiv.appendChild(textDiv);
 
-  // emojiDiv.childNodes.forEach((node) => node.remove());
-  // emojiDiv.append(icon, text);
-  // console.log(emojiDiv.childNodes);
   returnRandomEmojiArr();
 }
 
 function returnRandomEmojiArr() {
-  let emoji = emojiIcons[Math.round(Math.random() * emojiIcons.length - 1)];
+  let idx = Math.round(Math.random() * emojiIcons.length);
+  let emoji = emojiIcons[idx];
+  console.log(idx);
   return emoji;
 }
 
