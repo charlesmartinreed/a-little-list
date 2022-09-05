@@ -1,16 +1,20 @@
 @import url("/css/style.css");
 
 .container-input-box {
-  width: 510px;
+  width: 520px;
   min-height: 50px;
   /* background-color: red; */
-  /* border: 3px solid black; */
+  border: 2px solid rgba(0, 0, 0, 0.8);
+  box-shadow: -10px 10px 1px rgba(0, 0, 0, 0.8);
+  /* box-shadow: -0px 10px 20px rgba(0, 0, 0, 0.2), */
+  /* 0px -10px 20px rgba(0, 0, 0, 0.2); */
+
   grid-template-columns: 90% 10%;
 
   display: grid;
   gap: 4px;
   padding: 1rem;
-  margin: 8px 0;
+  margin: 1rem 0;
 }
 
 #input-search-item,
@@ -89,7 +93,7 @@
 .container-item-list .btn-delete-item:disabled,
 .btn-undo-delete:disabled,
 .btn-delete-all:disabled {
-  opacity: 0.2;
+  opacity: 0.8;
   cursor: not-allowed;
 }
 
@@ -108,7 +112,10 @@
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  background-color: rgba(51, 51, 51, 0.4);
+  background-color: rgba(51, 51, 51, 0.2);
+  box-shadow: -0px 10px 20px rgba(0, 0, 0, 0.2),
+    0px -10px 20px rgba(0, 0, 0, 0.2);
+
   padding: 8px;
 }
 
@@ -121,6 +128,7 @@
   grid-template-columns: 85% 15%;
   margin: 4px 0;
   padding: 1rem;
+  color: #ececec;
 
   transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   position: relative;
@@ -147,7 +155,7 @@
   height: 100%;
   resize: none;
   font-size: 15px;
-  background-color: #222;
+  background-color: rgba(0, 0, 0, 0.7);
   color: #ececec;
   font-family: inherit;
   border-radius: 3px;
@@ -196,10 +204,10 @@
 }
 
 .container-ui-buttons {
-  max-height: 40px;
-  width: 500px;
+  max-height: 60px;
+  min-width: 500px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   /* border: 1px solid #444; */
 }
@@ -211,6 +219,10 @@
   font-size: 2rem;
   background: none;
   padding: 8px;
+}
+
+.btn-ui:hover {
+  transform: scale(1.05);
 }
 
 #modal-info {
@@ -328,8 +340,7 @@
 }
 
 .btn-search-item-list.active {
-  -webkit-filter: grayscale(0);
-  filter: grayscale(0);
+  transform: scale(1.15);
 }
 
 span.up-arrow,

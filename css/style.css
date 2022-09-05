@@ -32,10 +32,10 @@ small {
   font-size: 12px;
 }
 
-button {
+/* button {
   -webkit-filter: grayscale(0.95);
   filter: grayscale(0.95);
-}
+} */
 
 .modal {
   display: none;
@@ -206,7 +206,7 @@ button {
 
 #form-login #btn-login-modal-submit:disabled {
   -webkit-filter: grayscale(1);
-          filter: grayscale(1);
+  filter: grayscale(1);
 }
 
 #btn-login-modal-submit {

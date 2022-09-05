@@ -140,6 +140,7 @@ function checkInputIsValid() {
 }
 
 function closeModalonBodyClick() {
+  // shoutout to https://techstacker.com/close-modal-click-outside-vanilla-javascript/ for .matches and .closest
   document.addEventListener("click", (e) => {
     if (e.target.matches("#btn-login-modal-submit")) {
       handleLoginAndSignup();
