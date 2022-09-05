@@ -9,6 +9,26 @@
     <title>Littlelist</title>
   </head>
   <body>
+    <div class="modal login-modal">
+      <h4 class="modal-header">Header Text</h4>
+      <form id="form-login" name="login">
+        <div>
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required />
+        </div>
+        <div>
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required />
+        </div>
+        <div>
+          <button
+            class="btn btn-login-modal-submit"
+            id="btn-login-modal-submit"
+            type="submit"
+          ></button>
+        </div>
+      </form>
+    </div>
     <div class="container-landing-page">
       <div class="emoji-carousel" id="emoji-carousel">
         <div class="emoji-icon"></div>
@@ -17,8 +37,20 @@
       <div class="cta cta-landing-page" id="cta-landing-page">
         <h1 class="cta-header">Littlelist</h1>
         <div class="cta-buttons">
-          <button class="btn btn-login" id="btn-login">Log in</button>
-          <button class="btn btn-signup" id="btn-signup">Sign up</button>
+          <button
+            class="btn btn-login"
+            id="btn-login"
+            data-heading-text="Welcome back 🥳"
+          >
+            Log in
+          </button>
+          <button
+            class="btn btn-signup"
+            id="btn-signup"
+            data-heading-text="We're glad to have you 👏"
+          >
+            Sign up
+          </button>
         </div>
       </div>
     </div>

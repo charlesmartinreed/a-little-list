@@ -213,19 +213,6 @@
   padding: 8px;
 }
 
-.modal {
-  display: none;
-  background-color: #444;
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-
-  z-index: 999;
-  border-radius: 4px;
-  transform: translate(-50%, -50%) scale(0);
-}
-
 #modal-info {
   height: 200px;
   width: 300px;
@@ -263,11 +250,6 @@
 #modal-info .btn-modal-cancel {
   background-color: var(--color-cancel-red);
   /* background-color: rgb(255, 69, 58); */
-}
-
-#modal-info.active {
-  display: block;
-  transform: translate(-50%, -50%) scale(1);
 }
 
 #modal-help {
