@@ -6,8 +6,9 @@ let ctaButtons = document.querySelectorAll(".cta-buttons button");
 let loginBtn = document.querySelector(".btn-login");
 let signupBtn = document.querySelector(".btn-signup");
 let submitBtn = document.querySelector("#btn-login-modal-submit");
-let inputEmail = document.querySelector("#login-email");
-let inputPassword = document.querySelector("#login-password");
+
+let inputEmail = document.querySelector("#login-email").value;
+let inputPassword = document.querySelector("#login-password").value;
 
 let pageContainer = document.querySelector(".container-landing-page");
 let loginModal = document.querySelector(".login-modal");
@@ -91,20 +92,28 @@ function handleAccountButtonClicked(e) {
     handleLoginAndSignup(clickedBtn);
   });
 
-  toggleLoginModal();
+  // toggleLoginModal();
 }
 
 function handleLoginAndSignup(clickedBtn) {
-  let email = inputEmail.value;
-  let password = inputPassword.value;
-
-  if (checkInputIsValid(email, password)) {
+  if (checkInputIsValid()) {
     if (clickedBtn.classList.contains("btn-login")) {
-      login(email, password);
+      login(inputEmail, inputPassword);
     } else {
-      signup(email, password);
+      signup(inputEmail, inputPassword);
     }
   } else {
+    submitBtn.animate(
+      [
+        { transform: "translateX(-2px) rotate(-5deg)" },
+        { transform: "translateX(0px) rotate(0deg)" },
+        { transform: "translateX(2px) rotate(5deg)" },
+      ],
+      {
+        duration: 100,
+        iterations: 3,
+      }
+    );
     return;
   }
 
@@ -112,13 +121,6 @@ function handleLoginAndSignup(clickedBtn) {
 }
 
 function toggleLoginModal() {
-  // document.querySelector("body").addEventListener("click", (e) => {
-  //   if (!e.target.classList.contains("modal-active")) {
-  //     console.log(e.target);
-  //     toggleLoginModal();
-  //   }
-  // });
-
   loginModal.classList.toggle("active");
   pageContainer.classList.toggle("modal-active");
 
@@ -133,11 +135,25 @@ function signup(user, pass) {
   console.log("signing up new user", "user:", user, "pass", pass);
 }
 
-function checkInputIsValid(emailStr, passwordStr) {
-  return emailStr !== "" && passwordStr !== "";
+function checkInputIsValid() {
+  return inputEmail !== "" || inputPassword !== "";
+}
+
+function closeModalonBodyClick() {
+  document.addEventListener("click", (e) => {
+    if (e.target.matches("#btn-login-modal-submit")) {
+      handleLoginAndSignup();
+      return;
+    }
+    if (!e.target.closest(".login-modal")) {
+      toggleLoginModal();
+    }
+  });
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  closeModalonBodyClick();
+
   setInterval(
     (function startInterval() {
       renderEmojiContainer();

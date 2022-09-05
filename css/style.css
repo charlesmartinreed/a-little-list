@@ -204,6 +204,11 @@ button {
   margin: 0 auto;
 }
 
+#form-login #btn-login-modal-submit:disabled {
+  -webkit-filter: grayscale(1);
+          filter: grayscale(1);
+}
+
 #btn-login-modal-submit {
   background-color: goldenrod;
   -webkit-filter: grayscale(0);
