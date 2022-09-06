@@ -21,10 +21,14 @@ let proxy = cors_proxy
     requireHeader: ["origin", "x-requested-with"],
     removeHeaders: ["cookie", "cookie2"],
   })
-  .listen(PORT, HOST, async (req, res) => {
+  .listen(PORT, HOST, (req, res) => {
     console.log(`Now running CORS Anywhere on ${HOST}:${PORT}`);
   });
 
+app.get("/proxy/:proxyUrl*", (req, res) => {
+  req.url = req.url.replace("/proxy/", "/");
+  proxy.emit("request", req, res);
+});
 // grab the results div: let itemDivs = Array.from(document.querySelectorAll('div')).filter((div) => div.classList.contains('b--near-white'));
 // check the name of the item, if name contains item_name, keep crawling, if not, return: let itemName = itemDivs[1].querySelector('a span').textContent;
 // grab the price : let itemPrice = itemDivs[1].querySelector('div.lh-copy')

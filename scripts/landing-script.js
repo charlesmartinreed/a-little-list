@@ -72,30 +72,20 @@ function returnRandomEmojiArr() {
   return emoji;
 }
 
-ctaButtons.forEach((btn) =>
-  btn.addEventListener("click", (e) => handleAccountButtonClicked(e))
-);
+// ctaButtons.forEach((btn) =>
+//   btn.addEventListener("click", (e) => handleAccountButtonClicked(e))
+// );
 
-function handleAccountButtonClicked(e) {
-  let clickedBtn = e.target;
+function handleAccountButtonClicked(btn) {
+  console.log("acct button clicked");
 
-  loginModalHeader.textContent = clickedBtn.getAttribute("data-heading-text");
+  loginModalHeader.textContent = btn.getAttribute("data-heading-text");
+  submitBtn.innerText = btn.getAttribute("data-btn-text");
 
-  if (clickedBtn.classList.contains("btn-login")) {
-    submitBtn.innerText = "Log in";
-  } else {
-    submitBtn.innerText = "Sign up";
-  }
-
-  submitBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    handleLoginAndSignup(clickedBtn);
-  });
-
-  // toggleLoginModal();
+  toggleLoginModal();
 }
 
-function handleLoginAndSignup(clickedBtn) {
+function handleLoginAndSignup() {
   if (checkInputIsValid()) {
     if (clickedBtn.classList.contains("btn-login")) {
       login(inputEmail, inputPassword);
@@ -116,8 +106,6 @@ function handleLoginAndSignup(clickedBtn) {
     );
     return;
   }
-
-  toggleLoginModal();
 }
 
 function toggleLoginModal() {
@@ -129,10 +117,12 @@ function toggleLoginModal() {
 
 function login(user, pass) {
   console.log("logging in old user", "user:", user, "pass", pass);
+  toggleLoginModal();
 }
 
 function signup(user, pass) {
   console.log("signing up new user", "user:", user, "pass", pass);
+  toggleLoginModal();
 }
 
 function checkInputIsValid() {
@@ -143,11 +133,18 @@ function closeModalonBodyClick() {
   // shoutout to https://techstacker.com/close-modal-click-outside-vanilla-javascript/ for .matches and .closest
   document.addEventListener("click", (e) => {
     if (e.target.matches("#btn-login-modal-submit")) {
-      handleLoginAndSignup();
+      handleLoginAndSignup(e.target);
       return;
     }
-    if (!e.target.closest(".login-modal")) {
-      toggleLoginModal();
+
+    if (e.target.matches(".container-landing-page")) {
+      if (loginModal.classList.contains("active")) {
+        toggleLoginModal();
+      }
+    }
+
+    if (e.target.matches(".btn-login") || e.target.matches(".btn-signup")) {
+      handleAccountButtonClicked(e.target);
     }
   });
 }

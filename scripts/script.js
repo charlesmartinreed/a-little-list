@@ -83,15 +83,19 @@ addModeInput.addEventListener("keypress", (e) => {
 
 searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
   displayItemList(allItems);
 });
 
-async function updateItemPrices() {
+function updateItemPrices() {
   if (allItems.length > 0) {
     allItems = allItems.map((item) => {
       let { item_avg_price } = item;
-      if (item_avg_price === "") {
+
+      if (
+        localStorage.getItem("item-prices") &&
+        localStorage.getItem("item-prices").length > 0
+      ) {
         let { avgPrice } = fetchWebSiteResults(item);
         if (avgPrice) {
           item_avg_price = avgPrice;

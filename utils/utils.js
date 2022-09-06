@@ -1,9 +1,12 @@
 export async function fetchWebSiteResults(item) {
   let { item_name, item_price_results, item_avg_price } = item;
-  let proxyURL = "http://localhost:6500/";
-  let URL = `${proxyURL}https://www.walmart.com/search?q=${item_name}`;
+  let proxyURL = "http://localhost:6500";
+  let URL = `${proxyURL}/https://www.walmart.com/search?q=${item_name}`;
 
-  console.log(item_name, item_price_results, item_avg_price);
+  console.log("route hit, attempting to fetch data", URL);
+  // console.log(item_name, item_price_results, item_avg_price);
+
+  let fetchedPrice;
 
   try {
     let res = await fetch(URL, {
@@ -16,13 +19,15 @@ export async function fetchWebSiteResults(item) {
     let rawBody = await res.text();
 
     let { avgPrice } = convertToHTMLAndParse(rawBody);
-    console.log("avgprice is", avgPrice);
-
-    return avgPrice;
+    writePricetoJSON(item_name, avgPrice);
   } catch (e) {
     console.log(e);
+    writePricetoJSON(item_name, 0);
     return;
   }
+
+  fetchedPrice = retrieveCachedPrice(item_name);
+  return fetchedPrice;
 }
 
 function convertToHTMLAndParse(resBody) {
@@ -45,21 +50,29 @@ function convertToHTMLAndParse(resBody) {
   ).toFixed(2);
 
   return { avgPrice };
-
-  //   let priceValues = prices.map((priceStr) => {
-  //     let startIndex = priceStr.indexOf("$");
-  //     if (startIndex === -1) return;
-  //     return priceStr.slice(startIndex);
-  //   });
-
-  console.log(itemDivs);
-  console.log(prices);
-  console.log(priceValues);
-
-  return doc;
 }
 
-function checkProductListingNameMatch() {}
+function writePricetoJSON(itemName, itemAvgPrice) {
+  // in the short term, i'll use local storage
+  // but this will be stored on a database soon
+  let priceData = JSON.stringify({ itemName: itemAvgPrice });
+
+  let currentData = localStorage.getItem("item-prices");
+
+  if (currentData) {
+    currentData = [...currentData, priceData];
+  } else {
+    currentData = priceData;
+  }
+
+  localStorage.setItem("item-prices", currentData);
+}
+
+function retrieveCachedPrice(itemName) {
+  let storedPriceData = JSON.parse(localStorage.getItem("item-prices"));
+  let storedAvgPrice = storedPriceData.itemName;
+  return storedAvgPrice;
+}
 
 // walmart crawler notes
 // when window page loads, if there are items:
