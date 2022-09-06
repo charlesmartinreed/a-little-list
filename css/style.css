@@ -5,13 +5,17 @@
 }
 
 :root {
-  --color-bg-item-recurrent: #2e2555;
-  --color-bg-item-temporal: #423872;
+  /* --color-bg-item-recurrent: #2e2555; */
+  /* --color-bg-item-recurrent: #3a8ce5; */
+  --color-bg-item-recurrent: rgba(133, 13, 82, 0.7);
+  /* --color-bg-item-temporal: #423872; */
+  --color-bg-item-temporal: rgba(253, 52, 105, 0.7);
   --color-link: #1e4279;
-  --color-confirm-green: #30d158;
+  --color-confirm-green: #03c13f;
   --color-cancel-red: #cf2121;
   --color-text-light-mode: #222;
   --color-body-bg-light-mode: goldenrod;
+  --color-text-box-bg: rgba(133, 13, 82, 0.3);
 }
 
 html,
@@ -30,6 +34,10 @@ small {
   font-weight: 300;
   font-style: italic;
   font-size: 12px;
+}
+
+input::placeholder {
+  color: inherit;
 }
 
 /* button {

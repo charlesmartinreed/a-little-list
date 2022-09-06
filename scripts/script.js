@@ -347,7 +347,7 @@ function displayItemList(itemList) {
   let html = "";
 
   if (itemList.length === 0) {
-    html += `<div class="empty-item-list">Your list is currently empty.</div>`;
+    html += `<div class="empty-item-list">Nothing to see here.</div>`;
     list.innerHTML = html;
   }
 
