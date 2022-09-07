@@ -1,4 +1,4 @@
-import { fetchWebSiteResults } from "../utils/utils.js";
+// import { fetchWebSiteResults } from "../utils/utils.js";
 
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
@@ -29,15 +29,16 @@ let addModeInput = document.querySelector("#input-add-item");
 let searchModeInput = document.querySelector("#input-search-item");
 
 let sortByDescending = true;
+let allItems;
 
-let allItems = [
-  {
-    item_name: "pickles",
-    item_id: returnItemID(),
-    item_avg_price: "",
-    item_is_recurrent: true,
-    item_notes: "Test note entry",
-  },
+let oldItems = [
+  // {
+  //   item_name: "pickles",
+  //   item_id: returnItemID(),
+  //   item_avg_price: "$0.00",
+  //   item_is_recurrent: true,
+  //   item_notes: "Test note entry",
+  // },
   // {
   //   item_name: "bread",
   //   item_id: returnItemID(),
@@ -45,13 +46,13 @@ let allItems = [
   //   item_is_recurrent: true,
   //   item_notes: "Test note entry",
   // },
-  {
-    item_name: "vodka",
-    item_id: returnItemID(),
-    item_avg_price: "",
-    item_is_recurrent: false,
-    item_notes: "Test note entry",
-  },
+  // {
+  //   item_name: "vodka",
+  //   item_id: returnItemID(),
+  //   item_avg_price: "$0.00",
+  //   item_is_recurrent: false,
+  //   item_notes: "Test note entry",
+  // },
   // {
   //   item_name: "cake",
   //   item_id: returnItemID(),
@@ -60,6 +61,7 @@ let allItems = [
   //   item_notes: "Test note entry",
   // },
 ];
+
 let deletedItems = [];
 
 // grab the price data, if possible
@@ -84,29 +86,9 @@ addModeInput.addEventListener("keypress", (e) => {
 searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 
 window.addEventListener("DOMContentLoaded", async () => {
+  allItems = await fetch("http://localhost:6500/list");
   displayItemList(allItems);
 });
-
-function updateItemPrices() {
-  if (allItems.length > 0) {
-    allItems = allItems.map((item) => {
-      let { item_avg_price } = item;
-
-      if (
-        localStorage.getItem("item-prices") &&
-        localStorage.getItem("item-prices").length > 0
-      ) {
-        let { avgPrice } = fetchWebSiteResults(item);
-        if (avgPrice) {
-          item_avg_price = avgPrice;
-        } else {
-          displayItemList(allItems);
-          return;
-        }
-      }
-    });
-  }
-}
 
 function handleDeleteAllBtnClicked() {
   handleModal(infoModal);
@@ -261,8 +243,8 @@ function addNewItem(e) {
   if (addModeInput.value !== "") {
     itemObject = {
       item_name: itemValue,
-      item_id: returnItemID(),
-      item_avg_price: fetchAvgPrice(),
+      item_id: null,
+      item_avg_price: null,
       item_is_recurrent: false,
     };
     addModeInput.value = "";
@@ -271,15 +253,6 @@ function addNewItem(e) {
   }
 
   updateItemsList(itemObject);
-}
-
-function returnItemID(idLen = 8) {
-  let id = "";
-  for (let i = 0; i < idLen; i++) {
-    id += String(Math.round(Math.random() * 9));
-  }
-
-  return id;
 }
 
 function deleteItem(e) {
