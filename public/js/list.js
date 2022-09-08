@@ -86,7 +86,7 @@ addModeInput.addEventListener("keypress", (e) => {
 searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 
 window.addEventListener("DOMContentLoaded", async () => {
-  allItems = await fetch("http://localhost:6500/list");
+  allItems = await fetch("http://localhost:6500/");
   displayItemList(allItems);
 });
 

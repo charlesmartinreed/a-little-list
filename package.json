@@ -2,8 +2,7 @@
   "name": "a-little-list",
   "version": "1.0.0",
   "description": "",
-  "main": "server/app.js",
-  "type": "module",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "devServer": "nodemon main"
