@@ -6,18 +6,27 @@ require("dotenv").config();
 // const fetch = require("node-fetch");
 const { JSDOM } = require("jsdom");
 
-// import { JSDOM } from "jsdom";
-
 const path = require("path");
 const express = require("express");
-const { reset } = require("nodemon");
-
-// import * as cors_proxy from "cors-anywhere";
-
-const app = express();
 
 const HOST = process.env.HOST || "0.0.0.0";
 const PORT = process.env.SERVER_PORT || 6500;
+const CORS_PORT = process.env.CORS_PORT || 5500;
+
+const app = express();
+
+// let proxy = require("cors-anywhere")
+//   .createServer({
+//     originWhitelist: [],
+//     requireHeader: ["origin", "x-requested-with"],
+//     removeHeaders: ["cookie", "cookie2"],
+//   })
+//   .listen(CORS_PORT, HOST, (req, res) => {
+//     console.log(`Now running CORS Anywhere on ${HOST}:${CORS_PORT}`);
+//   });
+
+// import * as cors_proxy from "cors-anywhere";
+
 // const proxyURL = `http://${HOST}:${PORT}`;
 
 let itemList;
@@ -37,11 +46,26 @@ let itemList;
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
 
+// app.get("*", (req, res) => {
+//   if (req.hostname === "walmart.com") {
+//     console.log("walmart route triggered");
+//     proxy.emit("request", req, res);
+//   }
+// });
+
 app.get("/", (req, res) => {
   res.sendFile(`${__dirname}/index.html`);
 });
 
 app.get("/list", (req, res) => {
+  let userIsGuest = req.query.is_guest;
+
+  if (userIsGuest === "true") {
+    console.log(userIsGuest, "guest mode active");
+  } else {
+    console.log("no query string passed");
+  }
+
   res.sendFile(`${__dirname}/list.html`);
 });
 
@@ -59,7 +83,7 @@ app.get("/list", (req, res) => {
 //   res.sendFile(path.join(__dirname, "list.html"));
 // });
 
-app.listen(PORT, () => console.log("now listening on PORT", PORT));
+app.listen(PORT, HOST, () => console.log("now listening on PORT", HOST, PORT));
 
 // app.post("/list", async (req, res) => {
 //   let newItem = req.body;
@@ -78,16 +102,6 @@ app.listen(PORT, () => console.log("now listening on PORT", PORT));
 //   let updatedItemList = await fetchItemsFromDB();
 //   res.json(updatedItemList);
 // });
-
-function returnItemID() {
-  let id = "";
-  let idLen = 8;
-  for (let i = 0; i < idLen; i++) {
-    id += String(Math.round(Math.random() * 9));
-  }
-
-  return id;
-}
 
 async function fetchItemsFromDB() {
   // TODO: Pull from an actual DB...

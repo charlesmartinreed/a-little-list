@@ -29,39 +29,8 @@ let addModeInput = document.querySelector("#input-add-item");
 let searchModeInput = document.querySelector("#input-search-item");
 
 let sortByDescending = true;
-let allItems;
 
-let oldItems = [
-  // {
-  //   item_name: "pickles",
-  //   item_id: returnItemID(),
-  //   item_avg_price: "$0.00",
-  //   item_is_recurrent: true,
-  //   item_notes: "Test note entry",
-  // },
-  // {
-  //   item_name: "bread",
-  //   item_id: returnItemID(),
-  //   item_avg_price: "",
-  //   item_is_recurrent: true,
-  //   item_notes: "Test note entry",
-  // },
-  // {
-  //   item_name: "vodka",
-  //   item_id: returnItemID(),
-  //   item_avg_price: "$0.00",
-  //   item_is_recurrent: false,
-  //   item_notes: "Test note entry",
-  // },
-  // {
-  //   item_name: "cake",
-  //   item_id: returnItemID(),
-  //   item_avg_price: "",
-  //   item_is_recurrent: false,
-  //   item_notes: "Test note entry",
-  // },
-];
-
+let allItems = [];
 let deletedItems = [];
 
 // grab the price data, if possible
@@ -85,8 +54,7 @@ addModeInput.addEventListener("keypress", (e) => {
 
 searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 
-window.addEventListener("DOMContentLoaded", async () => {
-  allItems = await fetch("http://localhost:6500/");
+window.addEventListener("DOMContentLoaded", () => {
   displayItemList(allItems);
 });
 
@@ -236,16 +204,19 @@ function searchItemsList(e) {
   }
 }
 
-function addNewItem(e) {
+async function addNewItem(e) {
   let itemValue = addModeInput.value;
   let itemObject;
+
+  let avgPrice = await fetchAvgPrice(itemValue);
 
   if (addModeInput.value !== "") {
     itemObject = {
       item_name: itemValue,
-      item_id: null,
-      item_avg_price: null,
+      item_id: generateItemID(),
+      item_avg_price: avgPrice,
       item_is_recurrent: false,
+      item_notes: "",
     };
     addModeInput.value = "";
   } else {
@@ -308,14 +279,6 @@ function toggleItemNotes(e) {
 
 function updateItemNotes(updateNote, itemObjID) {
   allItems.find((item) => item.item_id === itemObjID).item_notes = updateNote;
-}
-
-function fetchAvgPrice() {
-  let dollars = String(Math.round(Math.random() * 20));
-  let cents = String(Math.round(Math.random() * 99));
-  let centsAdjusted = cents >= 10 ? cents : `0${cents}`;
-
-  return `${dollars}.${centsAdjusted}`;
 }
 
 function displayItemList(itemList) {
@@ -393,4 +356,79 @@ function checkUIButtonsState() {
   sortItemsBtn
     .querySelector("span.down-arrow")
     .classList.toggle("active", sortByDescending);
+}
+
+function generateItemID() {
+  let id = "";
+  let idLen = 8;
+  for (let i = 0; i < idLen; i++) {
+    id += String(Math.round(Math.random() * 9));
+  }
+
+  return id;
+}
+
+async function fetchAvgPrice(itemName) {
+  let url = `https://cors-anywhere.herokuapp.com/https://www.walmart.com/search?q=${itemName}`;
+
+  let fetchedPrice;
+
+  try {
+    let res = await fetch(url, {
+      headers: {
+        Origin: "https://www.walmart.com",
+      },
+    });
+
+    console.log("fetching for", url);
+    let rawBody = await res.text();
+    console.log("fetched body is", rawBody.length, "characters long");
+    fetchedPrice = convertToHTMLAndParse(rawBody);
+  } catch (e) {
+    console.error(e);
+    fetchedPrice = 0;
+    console.log("could not fetch", fetchedPrice);
+  }
+
+  return fetchedPrice;
+}
+
+function convertToHTMLAndParse(resBody) {
+  let parser = new DOMParser();
+  let doc = parser.parseFromString(resBody, "text/html");
+
+  let itemDivs = Array.from(doc.querySelectorAll("div")).filter(
+    (div) => div.getAttribute("data-automation-id") === "product-price"
+  );
+
+  // let prices = Array.from(itemDivs.childNodes).filter((node) =>
+  //   node.innerText.match(/[$][0-9]+(\.[0-9]{1,2})?$/gm)
+  // );
+
+  let prices = itemDivs
+    .map((div) => div.innerHTML)
+    .map((divHTML) => {
+      let matched = divHTML.match(/[$][0-9]+(\.[0-9]{1,2})?/);
+
+      if (matched !== null) {
+        return Number(matched[0].replace(/[^0-9\.-]+/g, ""));
+      }
+    });
+
+  console.log(itemDivs);
+  console.log(prices);
+  // let prices = itemDivs.map((div) =>
+  //   div.innerText.match(/[$][0-9]+(\.[0-9]{1,2})?$/gm)
+  // );
+
+  // console.log(prices);
+
+  // let priceValues = prices.map((priceStr) =>
+  //   priceStr.replace(/[^0-9|^.]/gi, "")
+  // );
+
+  let avgPrice = (prices.reduce((a, b) => a + b) / prices.length).toFixed(2);
+
+  // console.log(avgPrice);
+  return avgPrice;
 }
