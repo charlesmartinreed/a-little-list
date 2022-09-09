@@ -36,6 +36,13 @@ small {
   font-size: 12px;
 }
 
+a {
+  text-decoration: none;
+  font-size: 18px;
+  color: var(--color-link);
+  font-weight: 600;
+}
+
 input::placeholder {
   color: inherit;
 }
@@ -206,6 +213,14 @@ input::placeholder {
   transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   /* box-shadow: 10px -6px 1px rgba(0, 0, 0, 0.8), -10px 6px 1px rgba(0, 0, 0, 0.8); */
+}
+
+#cta-landing-page .cta-guest-mode {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+#cta-landing-page .cta-guest-mode a {
 }
 
 #form-login #btn-login-modal-submit {

@@ -32,17 +32,17 @@ let itemList;
 //     console.log(`Now running CORS Anywhere on ${HOST}:${PORT}`);
 //   });
 
-app.use(express.json());
 // app.use("/", express.static(__dirname + "/public"));
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(`${__dirname}/public`));
+app.use(express.json());
 
-app.use("/", (req, res) => {
-  res.sendFile("index");
+app.get("/", (req, res) => {
+  res.sendFile(`${__dirname}/index.html`);
 });
 
-app.use("/list", (req, res) => {
-  res.sendFile("list");
+app.get("/list", (req, res) => {
+  res.sendFile(`${__dirname}/list.html`);
 });
 
 // app.use(express.static(path.join(__dirname, "public/css")));
