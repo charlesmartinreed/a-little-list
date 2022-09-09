@@ -369,6 +369,7 @@ function generateItemID() {
 }
 
 async function fetchAvgPrice(itemName) {
+  return 0;
   let url = `https://cors-anywhere.herokuapp.com/https://www.walmart.com/search?q=${itemName}`;
 
   let fetchedPrice;

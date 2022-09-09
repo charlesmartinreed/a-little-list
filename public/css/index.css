@@ -66,9 +66,13 @@ input::placeholder {
   transform: translate(-50%, -50%) scale(0);
 }
 
-.modal.login-modal .modal-header {
+/* .modal.login-modal  */
+
+.modal-header {
   font-size: 26px;
   text-align: center;
+  line-height: 2rem;
+  letter-spacing: 1.5px;
   /* font-weight: 300; */
   /* text-transform: uppercase; */
 }
@@ -76,7 +80,7 @@ input::placeholder {
 .modal.login-modal {
   height: 600px;
   width: 400px;
-  padding: 1rem;
+  padding: 0 1.5rem;
 }
 
 .modal.login-modal.active {
