@@ -2,12 +2,14 @@
 
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
+const listsListContainer = document.querySelector(".container-lists-list");
 
 const pageContainer = document.querySelector(".container-page");
 const helpModal = document.querySelector("#modal-help");
 const infoModal = document.querySelector("#modal-info");
 const dialog = document.querySelector("#notes-dialog");
 
+const listsListToggleBtn = document.querySelector("#btn-lists-list-toggle");
 const lockUnlockBtn = document.querySelector(".btn-lock-unlock-all");
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
 const deleteAllItemsBtn = document.querySelector(".btn-delete-all");
@@ -36,6 +38,7 @@ let deletedItems = [];
 // grab the price data, if possible
 
 // EVENT LISTENERS
+listsListToggleBtn.addEventListener("click", (e) => displayListsPane());
 lockUnlockBtn.addEventListener("click", (e) => handleLockBtnClicked(e));
 deleteAllItemsBtn.addEventListener("click", () => handleDeleteAllBtnClicked());
 undoDeleteBtn.addEventListener("click", () => handleUndoBtnClicked());
@@ -57,6 +60,10 @@ searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 window.addEventListener("DOMContentLoaded", () => {
   displayItemList(allItems);
 });
+
+function displayListsPane() {
+  listsListContainer.classList.toggle("active");
+}
 
 function handleDeleteAllBtnClicked() {
   handleModal(infoModal);
@@ -287,7 +294,7 @@ function displayItemList(itemList) {
   let html = "";
 
   if (itemList.length === 0) {
-    html += `<div class="empty-item-list">Nothing to see here.</div>`;
+    html += `<div class="empty-item-list">Your list is empty!?</div>`;
     list.innerHTML = html;
   }
 

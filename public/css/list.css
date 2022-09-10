@@ -1,5 +1,99 @@
 @import url("./index.css");
 
+#btn-lists-list-toggle {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  z-index: 999;
+
+  font-size: 36px;
+  /* color: var(--color-link); */
+  /* font-weight: 600; */
+  /* letter-spacing: 2px; */
+}
+
+.container-lists-list {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  width: 300px;
+  background-color: rgb(197, 174, 118);
+  /* background: none; */
+  transform: translateX(-200%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  outline: auto;
+  border-right: 1px solid var(--color-text-light-mode);
+
+  /* box-shadow: 8px 0px 1px rgba(0, 0, 0, 0.8); */
+
+  transition: 0.3s ease-in-out;
+  /* z-index: -999; */
+}
+
+.container-lists-list.active {
+  transform: translateX(0);
+}
+
+.container-lists-list-item {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 12px 0;
+  line-height: 1.8rem;
+}
+
+.container-lists-list-item .btn {
+  letter-spacing: 0.75px;
+  padding: 0.5rem;
+}
+
+.container-lists-list-item .btn-lists-list-display {
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.container-lists-list-item .btn-lists-list-share,
+.container-lists-list-item .btn-lists-list-delete {
+  border-radius: 5px;
+  border: 1px solid var(--color-text-light-mode);
+
+  transition: 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* background: none; */
+  background-color: goldenrod;
+}
+
+.container-lists-list-item .btn-lists-list-share:hover,
+.container-lists-list-item .btn-lists-list-share:focus,
+.container-lists-list-item .btn-lists-list-delete:hover,
+.container-lists-list-item .btn-lists-list-delete:focus {
+  transform: scale(1.05);
+  outline: auto;
+  /* outline-color: inherit; */
+  box-shadow: 4px 6px 1px rgba(0, 0, 0, 0.8);
+}
+
+.container-lists-list-item .btn-lists-list-share:hover,
+.container-lists-list-item .btn-lists-list-share:focus {
+  background-color: var(--color-confirm-green);
+}
+
+.container-lists-list-item .btn-lists-list-delete:hover,
+.container-lists-list-item .btn-lists-list-delete:focus {
+  background-color: var(--color-cancel-red);
+}
+
+.container-lists-list-item .btn-lists-list-share {
+}
+
+.container-lists-list-item .btn-lists-list-delete {
+  /* background-color: var(--color-cancel-red); */
+}
+
 .container-input-box {
   width: 520px;
   min-height: 50px;

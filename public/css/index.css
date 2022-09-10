@@ -52,6 +52,13 @@ input::placeholder {
   filter: grayscale(0.95);
 } */
 
+.btn {
+  cursor: pointer;
+  background: none;
+  outline: none;
+  border: none;
+}
+
 .modal {
   display: none;
   background-color: rgb(17, 17, 17, 0.9);
