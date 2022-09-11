@@ -50,21 +50,27 @@
 .container-lists-list-item .btn {
   letter-spacing: 0.75px;
   padding: 0.5rem;
+  transition: 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .container-lists-list-item .btn-lists-list-display {
   font-size: 18px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
+}
+
+.container-lists-list-item .btn-lists-list-display:hover,
+.container-lists-list-item .btn-lists-list-display:focus {
+  transform: scale(1.15);
 }
 
 .container-lists-list-item .btn-lists-list-share,
 .container-lists-list-item .btn-lists-list-delete {
   border-radius: 5px;
-  border: 1px solid var(--color-text-light-mode);
+  /* border: 1px solid var(--color-text-light-mode); */
 
-  transition: 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   /* background: none; */
-  background-color: goldenrod;
+  /* background-color: goldenrod; */
+  background-color: none;
 }
 
 .container-lists-list-item .btn-lists-list-share:hover,
