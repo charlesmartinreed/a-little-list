@@ -1,24 +1,55 @@
 @import url("./index.css");
 
-#btn-lists-list-toggle {
-  position: fixed;
-  top: 0%;
-  left: 0%;
-  z-index: 999;
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 1rem; */
+  padding: 0.5rem 0;
 
-  font-size: 32px;
-  /* color: var(--color-link); */
-  /* font-weight: 600; */
-  /* letter-spacing: 2px; */
+  transition: all 0.85 ease-in-out;
 }
 
-#btn-lists-list-toggle span {
+#nav-list-page {
+  width: 90%;
+  margin: 0 auto;
+  /* background-color: red; */
+}
+
+#nav-list-page #list-page-title {
+  outline: none;
+  background: none;
+  border: none;
+  font-size: 28px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+#nav-list-page #list-page-title:focus {
+  outline: auto;
+  border: 2px solid var(--color-text-light-mode);
+}
+
+#nav-list-page .btn {
+  font-size: 32px;
+}
+
+/* #nav-list-page #btn-lists-list-toggle { */
+/* font-size: 32px; */
+/* color: var(--color-link); */
+/* font-weight: 600; */
+/* letter-spacing: 2px; */
+/* z-index: 1200; */
+/* } */
+
+/* #btn-lists-list-toggle #btn-lists-list-toggle span {
   font-weight: 500;
   font-size: 16px;
   letter-spacing: -0.75px;
   color: var(--color-link);
   margin-left: -8px;
-}
+} */
 
 .container-lists-list {
   position: fixed;
@@ -58,29 +89,25 @@
   background-color: goldenrod;
 }
 
-.container-lists-list-item .btn {
+.container-lists-list .btn {
   letter-spacing: 0.75px;
   padding: 0.5rem;
   transition: 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.container-lists-list-item .btn-lists-list-display {
+#btn-lists-list-display,
+#btn-lists-list-close {
   font-size: 18px;
-  /* text-transform: uppercase; */
 }
 
-.container-lists-list-item .btn-lists-list-display:hover,
-.container-lists-list-item .btn-lists-list-display:focus {
-  /* transform: scale(1.15); */
+#btn-lists-list-close {
+  width: 90px;
+  align-self: center;
 }
 
 .container-lists-list-item .btn-lists-list-share,
 .container-lists-list-item .btn-lists-list-delete {
   border-radius: 5px;
-  /* border: 1px solid var(--color-text-light-mode); */
-
-  /* background: none; */
-  /* background-color: goldenrod; */
   background-color: none;
 }
 
@@ -102,6 +129,14 @@
 .container-lists-list-item .btn-lists-list-delete:hover,
 .container-lists-list-item .btn-lists-list-delete:focus {
   background-color: var(--color-cancel-red);
+}
+
+#btn-lists-list-close:hover,
+#btn-lists-list-close:focus {
+  outline: auto;
+  box-shadow: 4px 6px 1px rgba(0, 0, 0, 0.8);
+
+  background-color: goldenrod;
 }
 
 .container-input-box {

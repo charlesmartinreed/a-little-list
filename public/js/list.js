@@ -3,6 +3,7 @@
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
 const listsListContainer = document.querySelector("#container-lists-list");
+const listNameInputEl = document.querySelector("#list-page-title");
 
 const pageContainer = document.querySelector(".container-page");
 const helpModal = document.querySelector("#modal-help");
@@ -23,6 +24,7 @@ let deleteItemBtns;
 let lockedItemBtns;
 let showNotesBtns;
 let submitNotesBtns;
+let listsListContainerCloseBtns;
 
 let itemUIButtons = [];
 
@@ -39,6 +41,10 @@ let deletedItems = [];
 // grab the price data, if possible
 
 // EVENT LISTENERS
+listNameInputEl.addEventListener("keyup", (e) =>
+  updateListTitle(e.target.value)
+);
+
 listsListToggleBtn.addEventListener("click", (e) => displayListsPane());
 lockUnlockBtn.addEventListener("click", (e) => handleLockBtnClicked(e));
 deleteAllItemsBtn.addEventListener("click", () => handleDeleteAllBtnClicked());
@@ -59,15 +65,32 @@ addModeInput.addEventListener("keypress", (e) => {
 searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 
 function createNewList() {
-  let defautListName = `A list of ${generateNewListName()}`;
+  let defautListName = `${generateNewListName()}`;
+
   activeListName = defautListName;
-  allItems.push({ list_name: defautListName, list_items: [] });
+  listNameInputEl.value = activeListName;
+
+  allItems.push({
+    list_name: activeListName,
+    list_id: generateID(),
+    list_items: [],
+  });
 }
 
-function updateListName(updatedName) {
-  allItems.map(({ list_name }) => {
-    if (list_name === activeListName) list_name = updatedName;
-  });
+function updateListTitle(updatedTitle) {
+  let matchedList = allItems.find((list) => list.list_name === activeListName);
+
+  matchedList.list_name = updatedTitle;
+  activeListName = matchedList.list_name;
+
+  console.log(matchedList);
+
+  // allItems.map(({ list_name }) => {
+  //   if (list_name === activeListName) {
+  //     list_name = updatedTitle;
+  //     activeListName = list_name;
+  //   }
+  // });
 }
 
 function generateListsPane() {
@@ -77,23 +100,30 @@ function generateListsPane() {
     contentHTML += `
     <div class="container-lists-list-item" id="container-lists-list-item">
     <div>
-      <button class="btn btn-lists-list-display" data-list-id="10677838">${list.list_name}</button>
+      <button class="btn btn-lists-list-display" id="btn-lists-list-display" data-list-id=${list.list_id}>A list of ${list.list_name}</button>
     </div>
     <div>
       <button class="btn btn-lists-list-share">Share</button>
       <button class="btn btn-lists-list-delete">Delete</button>
     </div>
   </div>
+  <button class="btn btn-lists-list-close" id="btn-lists-list-close">Close</button>
   </div>
     `;
   });
 
   listsListContainer.innerHTML = contentHTML;
+
+  listsListContainerCloseBtns = document.querySelectorAll(
+    ".btn-lists-list-close"
+  );
+
+  addListenersToUIButtons(listsListContainerCloseBtns, displayListsPane);
 }
 
 function displayListsPane() {
-  generateListsPane();
   listsListContainer.classList.toggle("active");
+  generateListsPane();
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -267,7 +297,7 @@ async function addNewItem(e) {
   if (addModeInput.value !== "") {
     itemObject = {
       item_name: itemValue,
-      item_id: generateItemID(),
+      item_id: generateID(),
       item_avg_price: avgPrice,
       item_is_recurrent: false,
       item_notes: "Add a note about this item",
@@ -426,7 +456,7 @@ function checkUIButtonsState() {
     .classList.toggle("active", sortByDescending);
 }
 
-function generateItemID() {
+function generateID() {
   let id = "";
   let idLen = 8;
   for (let i = 0; i < idLen; i++) {
@@ -501,14 +531,14 @@ function generateNewListName() {
     "knee",
     "hose",
     "scene",
-    "knife",
+    "quilt",
     "bumper",
     "arithmetic",
     "quilt",
     "stove",
     "copper",
     "laborer",
-    "steel",
+    "boulder",
     "confusion",
     "religion",
     "treatment",
@@ -532,7 +562,7 @@ function generateNewListName() {
     "group",
     "behavior",
     "request",
-    "things",
+    "thing",
     "look",
     "gasket",
     "temple",
