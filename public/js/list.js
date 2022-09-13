@@ -2,7 +2,7 @@
 
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
-const listsListContainer = document.querySelector(".container-lists-list");
+const listsListContainer = document.querySelector("#container-lists-list");
 
 const pageContainer = document.querySelector(".container-page");
 const helpModal = document.querySelector("#modal-help");
@@ -32,6 +32,7 @@ let searchModeInput = document.querySelector("#input-search-item");
 
 let sortByDescending = true;
 
+let activeListName = "";
 let allItems = [];
 let deletedItems = [];
 
@@ -57,13 +58,48 @@ addModeInput.addEventListener("keypress", (e) => {
 
 searchModeInput.addEventListener("keyup", (e) => searchItemsList(e));
 
-window.addEventListener("DOMContentLoaded", () => {
-  displayItemList(allItems);
-});
+function createNewList() {
+  let defautListName = `A list of ${generateNewListName()}`;
+  activeListName = defautListName;
+  allItems.push({ list_name: defautListName, list_items: [] });
+}
+
+function updateListName(updatedName) {
+  allItems.map(({ list_name }) => {
+    if (list_name === activeListName) list_name = updatedName;
+  });
+}
+
+function generateListsPane() {
+  let contentHTML = "";
+
+  allItems.forEach((list) => {
+    contentHTML += `
+    <div class="container-lists-list-item" id="container-lists-list-item">
+    <div>
+      <button class="btn btn-lists-list-display" data-list-id="10677838">${list.list_name}</button>
+    </div>
+    <div>
+      <button class="btn btn-lists-list-share">Share</button>
+      <button class="btn btn-lists-list-delete">Delete</button>
+    </div>
+  </div>
+  </div>
+    `;
+  });
+
+  listsListContainer.innerHTML = contentHTML;
+}
 
 function displayListsPane() {
+  generateListsPane();
   listsListContainer.classList.toggle("active");
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+  createNewList();
+  displayItemList(allItems);
+});
 
 function handleDeleteAllBtnClicked() {
   handleModal(infoModal);
@@ -71,14 +107,18 @@ function handleDeleteAllBtnClicked() {
   let confirmBtn = infoModal.querySelector(".btn-modal-confirm");
   let cancelBtn = infoModal.querySelector(".btn-modal-cancel");
 
+  let matchedList = allItems.find((list) => list.list_name === activeListName);
+
   confirmBtn.addEventListener("click", () => {
-    let deletedItems = allItems.filter(
+    let pendingDeletedItems = matchedList.list_items.filter(
       ({ item_is_recurrent }) => !item_is_recurrent
     );
 
-    moveToDeleteItems(deletedItems);
+    moveToDeletedItems(pendingDeletedItems);
 
-    allItems = allItems.filter(({ item_is_recurrent }) => item_is_recurrent);
+    matchedList.list_items = matchedList.list_items.filter(
+      ({ item_is_recurrent }) => item_is_recurrent
+    );
 
     handleDeleteAllBtnClicked();
     displayItemList(allItems);
@@ -89,30 +129,35 @@ function handleDeleteAllBtnClicked() {
   });
 }
 
-function moveToDeleteItems(itemObj) {
-  if (itemObj.length > 1) {
-    deletedItems = [...deletedItems, itemObj];
-  }
+function moveToDeletedItems(itemObj) {
+  deletedItems.push(itemObj);
 
-  if (itemObj.length === 1) {
-    deletedItems = [...deletedItems, ...itemObj];
-  }
+  // let objectKeyCount = Object.keys(itemObj).length;
+
+  // if (objectKeyCount > 1) {
+  //   deletedItems = [...deletedItems, itemObj];
+  // }
+
+  // if (objectKeyCount === 1) {
+  //   deletedItems = [...deletedItems, ...itemObj];
+  // }
 }
 
 function handleUndoBtnClicked() {
-  if (deletedItems.length >= 1) {
-    let lastDeleted = deletedItems.pop();
+  let lastDeleted;
+  let matchedList = allItems.find((list) => list.list_name === activeListName);
+
+  while (deletedItems.length >= 1) {
+    lastDeleted = deletedItems.pop();
 
     if (Array.isArray(lastDeleted)) {
-      allItems.push(...lastDeleted);
+      matchedList.list_items.push(...lastDeleted);
     } else {
-      allItems.push(lastDeleted);
+      matchedList.list_items.push(lastDeleted);
     }
-
-    displayItemList(allItems);
   }
 
-  if (deletedItems.length === 0) return;
+  displayItemList(allItems);
 }
 
 function handleLockBtnClicked(e) {
@@ -160,6 +205,7 @@ function filterAndSortListItems(messyArr) {
   let recurrentItems = messyArr.filter(
     ({ item_is_recurrent }) => item_is_recurrent
   );
+
   let novelItems = messyArr.filter(
     ({ item_is_recurrent }) => !item_is_recurrent
   );
@@ -213,6 +259,7 @@ function searchItemsList(e) {
 
 async function addNewItem(e) {
   let itemValue = addModeInput.value;
+
   let itemObject;
 
   let avgPrice = await fetchAvgPrice(itemValue);
@@ -223,7 +270,7 @@ async function addNewItem(e) {
       item_id: generateItemID(),
       item_avg_price: avgPrice,
       item_is_recurrent: false,
-      item_notes: "",
+      item_notes: "Add a note about this item",
     };
     addModeInput.value = "";
   } else {
@@ -237,11 +284,17 @@ function deleteItem(e) {
   let deletedItemId =
     e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
 
-  let deletedItem = allItems.filter(({ item_id }) => item_id === deletedItemId);
+  let matchedList = allItems.find((list) => list.list_name === activeListName);
 
-  moveToDeleteItems(deletedItem);
+  let [deletedItem] = matchedList.list_items.filter(
+    ({ item_id }) => item_id === deletedItemId
+  );
 
-  allItems = allItems.filter(({ item_id }) => item_id !== deletedItemId);
+  matchedList.list_items = matchedList.list_items.filter(
+    ({ item_id }) => item_id !== deletedItemId
+  );
+
+  moveToDeletedItems(deletedItem);
 
   displayItemList(allItems);
 }
@@ -250,16 +303,22 @@ function toggleRecurrentItem(e) {
   let itemId =
     e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
 
-  allItems.map((item) => {
-    if (item.item_id === itemId)
+  allItems.map((list) => {
+    if (list.list_name === activeListName) {
+      let item = list.list_items.find((item) => item.item_id === itemId);
       item.item_is_recurrent = !item.item_is_recurrent;
+    }
   });
 
   displayItemList(allItems);
 }
 
 function updateItemsList(newItemObj) {
-  allItems.push(newItemObj);
+  allItems.map((list) => {
+    if (list.list_name === activeListName) {
+      list.list_items = [...list.list_items, newItemObj];
+    }
+  });
 
   displayItemList(allItems);
 }
@@ -267,7 +326,7 @@ function updateItemsList(newItemObj) {
 function toggleItemNotes(e) {
   let itemID =
     e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
-  let [{ item_notes }] = allItems.filter((item) => item.item_id === itemID);
+  // let [{ item_notes }] = allItems.filter((list) => item.item_id === itemID);
 
   let [textbox] = Array.from(
     document.querySelectorAll(".container-item-list-notes")
@@ -284,32 +343,35 @@ function toggleItemNotes(e) {
   });
 }
 
-function updateItemNotes(updateNote, itemObjID) {
-  allItems.find((item) => item.item_id === itemObjID).item_notes = updateNote;
+function updateItemNotes(updateNote, itemID) {
+  let [{ item_notes }] = allItems
+    .find((list) => list.list_name === activeListName)
+    .list_items.filter(({ item_id }) => item_id === itemID);
+
+  item_notes = updateNote;
 }
 
 function displayItemList(itemList) {
+  let currentListItems = allItems.find(
+    (list) => list.list_name === activeListName
+  ).list_items;
+
   checkUIButtonsState();
 
   let html = "";
 
-  if (itemList.length === 0) {
+  if (currentListItems.length === 0) {
     html += `<div class="empty-item-list">Your list is empty!?</div>`;
     list.innerHTML = html;
+    return;
   }
 
-  if (itemList.length > 0) {
-    let arrangedItems = filterAndSortListItems(itemList);
+  let arrangedItems = filterAndSortListItems(currentListItems);
 
-    for (let item of arrangedItems) {
-      let {
-        item_name,
-        item_id,
-        item_avg_price,
-        item_is_recurrent,
-        item_notes,
-      } = item;
-      html += `
+  for (let item of arrangedItems) {
+    let { item_name, item_id, item_avg_price, item_is_recurrent, item_notes } =
+      item;
+    html += `
           <div class="${
             item_is_recurrent
               ? "container-item-list recurrent"
@@ -334,7 +396,6 @@ function displayItemList(itemList) {
             <button class="btn btn-list-notes-submit" id="btn-list-notes-submit">✅</button>
             </div>
           `;
-    }
 
     list.innerHTML = html;
 
@@ -423,20 +484,120 @@ function convertToHTMLAndParse(resBody) {
       }
     });
 
-  console.log(itemDivs);
-  console.log(prices);
-  // let prices = itemDivs.map((div) =>
-  //   div.innerText.match(/[$][0-9]+(\.[0-9]{1,2})?$/gm)
-  // );
-
-  // console.log(prices);
-
-  // let priceValues = prices.map((priceStr) =>
-  //   priceStr.replace(/[^0-9|^.]/gi, "")
-  // );
-
   let avgPrice = (prices.reduce((a, b) => a + b) / prices.length).toFixed(2);
 
-  // console.log(avgPrice);
   return avgPrice;
+}
+
+function generateNewListName() {
+  let nouns = [
+    "sail",
+    "sock",
+    "notebook",
+    "neck",
+    "axolotl",
+    "quince",
+    "rice",
+    "knee",
+    "hose",
+    "scene",
+    "knife",
+    "bumper",
+    "arithmetic",
+    "quilt",
+    "stove",
+    "copper",
+    "laborer",
+    "steel",
+    "confusion",
+    "religion",
+    "treatment",
+    "hall",
+    "bomb",
+    "argument",
+    "manager",
+    "position",
+    "zephyr",
+    "oceleot",
+    "flavor",
+    "route",
+    "front",
+    "temper",
+    "wealth",
+    "machine",
+    "templar",
+    "self",
+    "anger",
+    "thought",
+    "group",
+    "behavior",
+    "request",
+    "things",
+    "look",
+    "gasket",
+    "temple",
+    "crowd",
+    "arboretum",
+    "bead",
+    "harbor",
+    "range",
+  ];
+  let adjectives = [
+    "pushy",
+    "lovely",
+    "heavy",
+    "momentous",
+    "hissing",
+    "boiling",
+    "unruly",
+    "boundless",
+    "bloody",
+    "thundering",
+    "clever",
+    "uneven",
+    "thinkable",
+    "cynical",
+    "wet",
+    "coordinated",
+    "first",
+    "glorious",
+    "awesome",
+    "crooked",
+    "available",
+    "quack",
+    "upset",
+    "nervous",
+    "testy",
+    "tense",
+    "typical",
+    "selective",
+    "concerned",
+    "hysterical",
+    "unwieldy",
+    "naive",
+    "unadvised",
+    "better",
+    "funny",
+    "even",
+    "abstracted",
+    "inquisitive",
+    "faithful",
+    "moaning",
+    "brainy",
+    "efficient",
+    "delicate",
+    "conscious",
+    "tangible",
+    "dramatic",
+    "enchanting",
+    "uppity",
+    "invincible",
+    "sedate",
+  ];
+
+  let phrase = `${adjectives[Math.floor(Math.random() * adjectives.length)]} ${
+    nouns[Math.floor(Math.random() * nouns.length)]
+  }s`;
+
+  return phrase;
 }

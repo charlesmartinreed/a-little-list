@@ -6,10 +6,18 @@
   left: 0%;
   z-index: 999;
 
-  font-size: 36px;
+  font-size: 32px;
   /* color: var(--color-link); */
   /* font-weight: 600; */
   /* letter-spacing: 2px; */
+}
+
+#btn-lists-list-toggle span {
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.75px;
+  color: var(--color-link);
+  margin-left: -8px;
 }
 
 .container-lists-list {
@@ -41,10 +49,13 @@
   height: 50px;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  margin: 12px 0;
+  margin: 1rem 0;
+  padding: 3rem 0;
   line-height: 1.8rem;
+  background-color: goldenrod;
 }
 
 .container-lists-list-item .btn {
@@ -60,7 +71,7 @@
 
 .container-lists-list-item .btn-lists-list-display:hover,
 .container-lists-list-item .btn-lists-list-display:focus {
-  transform: scale(1.15);
+  /* transform: scale(1.15); */
 }
 
 .container-lists-list-item .btn-lists-list-share,
@@ -93,13 +104,6 @@
   background-color: var(--color-cancel-red);
 }
 
-.container-lists-list-item .btn-lists-list-share {
-}
-
-.container-lists-list-item .btn-lists-list-delete {
-  /* background-color: var(--color-cancel-red); */
-}
-
 .container-input-box {
   width: 520px;
   min-height: 50px;
@@ -115,6 +119,8 @@
   gap: 4px;
   padding: 1rem;
   margin: 1rem 0;
+
+  transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 #input-search-item,

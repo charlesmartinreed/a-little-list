@@ -8,7 +8,6 @@ const { JSDOM } = require("jsdom");
 
 const path = require("path");
 const express = require("express");
-const { rmSync } = require("fs");
 
 const HOST = process.env.HOST || "0.0.0.0";
 const PORT = process.env.SERVER_PORT || 6500;
