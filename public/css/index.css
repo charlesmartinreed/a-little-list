@@ -47,11 +47,6 @@ input::placeholder {
   color: inherit;
 }
 
-/* button {
-  -webkit-filter: grayscale(0.95);
-  filter: grayscale(0.95);
-} */
-
 .btn {
   cursor: pointer;
   background: none;

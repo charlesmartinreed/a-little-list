@@ -34,7 +34,8 @@ let searchModeInput = document.querySelector("#input-search-item");
 
 let sortByDescending = true;
 
-let activeListName = "";
+let activeListName = null;
+
 let allItems = [];
 let deletedItems = [];
 
@@ -82,15 +83,6 @@ function updateListTitle(updatedTitle) {
 
   matchedList.list_name = updatedTitle;
   activeListName = matchedList.list_name;
-
-  console.log(matchedList);
-
-  // allItems.map(({ list_name }) => {
-  //   if (list_name === activeListName) {
-  //     list_name = updatedTitle;
-  //     activeListName = list_name;
-  //   }
-  // });
 }
 
 function generateListsPane() {
@@ -208,16 +200,26 @@ function handleLockBtnClicked(e) {
 }
 
 function handleLockAllItems() {
-  allItems.forEach((item) => {
+  let currentListItems = allItems.find(
+    (list) => list.list_name === activeListName
+  ).list_items;
+
+  currentListItems.forEach((item) => {
     item.item_is_recurrent = true;
   });
+
   displayItemList(allItems);
 }
 
 function handleUnlockAllItems() {
-  allItems.forEach((item) => {
+  let currentListItems = allItems.find(
+    (list) => list.list_name === activeListName
+  ).list_items;
+
+  currentListItems.forEach((item) => {
     item.item_is_recurrent = false;
   });
+
   displayItemList(allItems);
 }
 
@@ -272,18 +274,22 @@ function searchItemsList(e) {
   let input = searchModeInput.value;
   let inputLen = input.length;
 
+  let currentList = allItems.find(
+    (list) => list.list_name === activeListName
+  ).list_items;
+
   if (input === "") {
     displayItemList(allItems);
   }
 
   if (input !== "" && inputLen >= 1) {
-    let matches = allItems.filter((item) => {
+    let matches = currentList.filter((item) => {
       if (item.item_name.slice(0, inputLen) === input) {
         return item;
       }
     });
 
-    displayItemList(matches);
+    displayItemList([{ list_name: activeListName, list_items: [...matches] }]);
   }
 }
 
@@ -382,7 +388,7 @@ function updateItemNotes(updateNote, itemID) {
 }
 
 function displayItemList(itemList) {
-  let currentListItems = allItems.find(
+  let currentListItems = itemList.find(
     (list) => list.list_name === activeListName
   ).list_items;
 
@@ -428,6 +434,7 @@ function displayItemList(itemList) {
           `;
 
     list.innerHTML = html;
+    console.log(list.innerHTML);
 
     deleteItemBtns = document.querySelectorAll(".btn-delete-item");
     lockedItemBtns = document.querySelectorAll(".btn-lock-item");

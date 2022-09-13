@@ -295,7 +295,7 @@ nav {
   display: grid;
   grid-template-columns: 85% 15%;
   margin-bottom: 1px;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   /* color: #feffe2; */
 
   transition: 0.2s linear;
