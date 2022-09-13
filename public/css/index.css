@@ -7,15 +7,15 @@
 :root {
   /* --color-bg-item-recurrent: #2e2555; */
   /* --color-bg-item-recurrent: #3a8ce5; */
-  --color-bg-item-recurrent: rgba(133, 13, 82, 0.7);
+  --color-bg-item-recurrent: rgba(22, 59, 113, 1);
   /* --color-bg-item-temporal: #423872; */
-  --color-bg-item-temporal: rgba(253, 52, 105, 0.7);
+  --color-bg-item-temporal: rgba(36, 78, 142, 1);
   --color-link: #1e4279;
   --color-confirm-green: #03c13f;
   --color-cancel-red: #cf2121;
   --color-text-light-mode: #222;
   --color-body-bg-light-mode: goldenrod;
-  --color-text-box-bg: rgba(133, 13, 82, 0.3);
+  --color-text-box-bg: rgba(22, 59, 113, 0.5);
 }
 
 html,
@@ -61,7 +61,9 @@ input::placeholder {
 
 .modal {
   display: none;
-  background-color: rgb(17, 17, 17, 0.9);
+  background-color: var(--color-text-light-mode);
+  border-color: 1px solid goldenrod;
+  /* outline: auto; */
   color: #ececec;
 
   position: absolute;
@@ -71,6 +73,10 @@ input::placeholder {
   z-index: 999;
   border-radius: 4px;
   transform: translate(-50%, -50%) scale(0);
+}
+
+.modal .btn {
+  min-width: 65px;
 }
 
 /* .modal.login-modal  */
@@ -231,9 +237,6 @@ input::placeholder {
   text-align: center;
 }
 
-#cta-landing-page .cta-guest-mode a {
-}
-
 #form-login #btn-login-modal-submit {
   margin: 0 auto;
 }
@@ -274,40 +277,6 @@ input::placeholder {
 #btn-signup:hover,
 #btn-signup:focus {
   box-shadow: 10px 6px 1px rgba(0, 0, 0, 0.8);
-}
-
-@-webkit-keyframes riseAndFall {
-  0% {
-    transform: translateY(25px);
-    opacity: 0.5;
-    -webkit-filter: blur(8px);
-    filter: blur(8px);
-  }
-
-  20%,
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-    -webkit-filter: blur(0);
-    filter: blur(0);
-  }
-}
-
-@keyframes riseAndFall {
-  0% {
-    transform: translateY(25px);
-    opacity: 0.5;
-    -webkit-filter: blur(8px);
-    filter: blur(8px);
-  }
-
-  20%,
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-    -webkit-filter: blur(0);
-    filter: blur(0);
-  }
 }
 
 @media screen and (max-width: 500px) {
