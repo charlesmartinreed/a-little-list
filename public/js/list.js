@@ -1,5 +1,8 @@
 // import { fetchWebSiteResults } from "../utils/utils.js";
 
+let sortByDescending = true;
+let activeListName = null;
+
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
 const listsListContainer = document.querySelector("#container-lists-list");
@@ -33,10 +36,6 @@ let itemUIButtons = [];
 let inputContainer = document.querySelector(".container-input-box");
 let addModeInput = document.querySelector("#input-add-item");
 let searchModeInput = document.querySelector("#input-search-item");
-
-let sortByDescending = true;
-
-let activeListName = null;
 
 let allItems = [];
 let deletedItems = [];

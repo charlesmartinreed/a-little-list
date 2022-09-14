@@ -279,8 +279,8 @@ input::placeholder {
     font-size: 12px;
   }
 
-  .login-modal {
-    height: 300px;
+  .modal.login-modal {
+    height: 80%;
     width: 80%;
   }
 
