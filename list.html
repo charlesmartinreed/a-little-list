@@ -27,7 +27,10 @@
       </div>
     </div>
     <div class="modal modal-help" id="modal-help">
-      <div>Use 📃 to view all of the lists you've created so far.</div>
+      <div>
+        Use 📃 to view all of the lists you've created so far and ➕ to create a
+        new list.
+      </div>
       <div>
         Is your item a frequent purchase? Use 🔒
         <span id="recurrent-tag-color">to lock it in</span> and ensure it stays
@@ -62,16 +65,34 @@
     <div class="container-page">
       <nav class="nav nav-list-page" id="nav-list-page">
         <div class="nav-left">
-          <button class="btn btn-lists-list-toggle" id="btn-lists-list-toggle">
-            📃
+          <button
+            class="btn btn-lists-list-toggle"
+            id="btn-lists-list-toggle"
+            title="View your lists"
+          >
+            <span class="btn-icon">📃</span
+            ><span class="btn-text">Your Lists</span>
+          </button>
+          <button
+            class="btn btn-lists-create-new-list"
+            id="btn-lists-create-new-list"
+            title="Create new list"
+          >
+            <span class="btn-icon">➕</span
+            ><span class="btn-text">New List</span>
           </button>
         </div>
         <div class="nav-center">
           <input id="list-page-title" type="text" value="" />
         </div>
         <div class="nav-right">
-          <button class="btn btn-nav-user-login" id="btn-nav-user-login">
-            👥
+          <button
+            class="btn btn-nav-user-login"
+            id="btn-nav-user-login"
+            title="Login / Logout"
+          >
+            <span class="btn-icon">👥</span>
+            <span class="btn-text">Login</span>
           </button>
         </div>
       </nav>

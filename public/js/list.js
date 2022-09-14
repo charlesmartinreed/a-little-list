@@ -10,6 +10,7 @@ const helpModal = document.querySelector("#modal-help");
 const infoModal = document.querySelector("#modal-info");
 const dialog = document.querySelector("#notes-dialog");
 
+const createNewListBtn = document.querySelector("#btn-lists-create-new-list");
 const listsListToggleBtn = document.querySelector("#btn-lists-list-toggle");
 const lockUnlockBtn = document.querySelector(".btn-lock-unlock-all");
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
@@ -25,6 +26,7 @@ let lockedItemBtns;
 let showNotesBtns;
 let submitNotesBtns;
 let listsListContainerCloseBtns;
+let listsListSwitchCurrentBtns;
 
 let itemUIButtons = [];
 
@@ -42,6 +44,9 @@ let deletedItems = [];
 // grab the price data, if possible
 
 // EVENT LISTENERS
+
+createNewListBtn.addEventListener("click", (e) => createNewList());
+
 listNameInputEl.addEventListener("keyup", (e) =>
   updateListTitle(e.target.value)
 );
@@ -76,6 +81,17 @@ function createNewList() {
     list_id: generateID(),
     list_items: [],
   });
+
+  displayItemList(allItems);
+}
+
+function switchCurrentlyDisplayedList(e) {
+  let id = e.target.getAttribute("data-list-id");
+  activeListName = allItems.find((list) => list.list_id === id).list_name;
+  listNameInputEl.value = activeListName;
+
+  displayItemList(allItems);
+  listsListContainer.classList.remove("active");
 }
 
 function updateListTitle(updatedTitle) {
@@ -99,17 +115,32 @@ function generateListsPane() {
       <button class="btn btn-lists-list-delete">Delete</button>
     </div>
   </div>
-  <button class="btn btn-lists-list-close" id="btn-lists-list-close">Close</button>
   </div>
     `;
   });
 
+  // <button class="btn btn-lists-list-close" id="btn-lists-list-close">Close</button>
   listsListContainer.innerHTML = contentHTML;
+
+  let closeBtn = document.createElement("button");
+  closeBtn.setAttribute("class", "btn btn-lists-list-close");
+  closeBtn.setAttribute("id", "btn-lists-list-close");
+  closeBtn.textContent = "Close";
+
+  listsListContainer.appendChild(closeBtn);
 
   listsListContainerCloseBtns = document.querySelectorAll(
     ".btn-lists-list-close"
   );
 
+  listsListSwitchCurrentBtns = document.querySelectorAll(
+    ".btn-lists-list-display"
+  );
+
+  addListenersToUIButtons(
+    listsListSwitchCurrentBtns,
+    switchCurrentlyDisplayedList
+  );
   addListenersToUIButtons(listsListContainerCloseBtns, displayListsPane);
 }
 

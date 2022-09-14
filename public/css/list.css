@@ -11,10 +11,33 @@ nav {
   transition: all 0.85 ease-in-out;
 }
 
+nav .btn {
+  transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  margin: 0 1rem;
+}
+
 #nav-list-page {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   /* background-color: red; */
+}
+
+#nav-list-page #btn-lists-create-new-list {
+  font-size: 1.1rem;
+}
+
+/* #nav-list-page .btn span {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+} */
+
+#nav-list-page .nav-left,
+#nav-list-page .nav-center,
+#nav-list-page .nav-right {
+  /* width: 30%; */
+  width: 100%;
+  text-align: center;
 }
 
 #nav-list-page #list-page-title {
@@ -33,9 +56,10 @@ nav {
   border: 2px solid var(--color-text-light-mode);
 }
 
+/* 
 #nav-list-page .btn {
   font-size: 32px;
-}
+} */
 
 /* #nav-list-page #btn-lists-list-toggle { */
 /* font-size: 32px; */
@@ -86,7 +110,7 @@ nav {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  margin: 1rem 0;
+  margin: 2px 0;
   padding: 3rem 0;
   line-height: 1.8rem;
   background-color: goldenrod;
@@ -112,6 +136,11 @@ nav {
 .container-lists-list-item .btn-lists-list-delete {
   border-radius: 5px;
   background-color: none;
+}
+
+.container-lists-list-item .btn-lists-list-display:focus,
+.container-lists-list-item .btn-lists-list-display:hover {
+  transform: scale(1.15);
 }
 
 .container-lists-list-item .btn-lists-list-share:hover,
@@ -394,6 +423,7 @@ nav {
   transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
+nav .btn:hover,
 .btn-ui:hover,
 .container-input-box .btn-add-new-item:hover {
   transform: scale(1.15);
@@ -540,17 +570,20 @@ nav {
   outline-color: var(--color-confirm-green);
 }
 
+#nav-list-page .btn-icon,
 .btn-lock-unlock-all .btn-icon,
 .btn-delete-all .btn-icon,
 .btn-undo-delete .btn-icon {
-  font-size: 20px;
+  font-size: 26px;
 }
 
+#nav-list-page .btn-text,
 .btn-lock-unlock-all .btn-text,
 .btn-delete-all .btn-text,
 .btn-undo-delete .btn-text {
   display: block;
-  font-size: 16px;
+  font-size: 14px;
+  letter-spacing: 0.75px;
 }
 
 .btn-search-item-list.active {
