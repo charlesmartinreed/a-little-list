@@ -1,3 +1,5 @@
+console.log("utils loaded");
+
 export async function fetchWebSiteResults(item) {
   let { item_name, item_price_results, item_avg_price } = item;
   let proxyURL = "http://localhost:6500";

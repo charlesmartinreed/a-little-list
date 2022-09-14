@@ -30,6 +30,7 @@ let showNotesBtns;
 let submitNotesBtns;
 let listsListContainerCloseBtns;
 let listsListSwitchCurrentBtns;
+let deleteListBtns;
 
 let itemUIButtons = [];
 
@@ -81,11 +82,39 @@ function createNewList() {
     list_items: [],
   });
 
+  console.log("added new list", allItems);
+
   displayItemList(allItems);
+}
+
+function deleteList(e) {
+  let id =
+    e.target.parentElement.previousElementSibling.children[0].getAttribute(
+      "data-list-id"
+    );
+
+  console.log(id);
+
+  allItems = allItems.filter((list) => list.list_id !== id);
+
+  if (allItems.length === 0) {
+    createNewList();
+  }
+
+  if (allItems.length >= 1) {
+    let updatedTitle = allItems[0].list_name;
+    activeListName = updatedTitle;
+    listNameInputEl.value = updatedTitle;
+    displayItemList(allItems);
+  }
+
+  console.log(allItems);
+  listsListContainer.classList.remove("active");
 }
 
 function switchCurrentlyDisplayedList(e) {
   let id = e.target.getAttribute("data-list-id");
+
   activeListName = allItems.find((list) => list.list_id === id).list_name;
   listNameInputEl.value = activeListName;
 
@@ -131,7 +160,7 @@ function generateListsPane() {
   listsListContainerCloseBtns = document.querySelectorAll(
     ".btn-lists-list-close"
   );
-
+  deleteListBtns = document.querySelectorAll(".btn-lists-list-delete");
   listsListSwitchCurrentBtns = document.querySelectorAll(
     ".btn-lists-list-display"
   );
@@ -140,6 +169,7 @@ function generateListsPane() {
     listsListSwitchCurrentBtns,
     switchCurrentlyDisplayedList
   );
+  addListenersToUIButtons(deleteListBtns, deleteList);
   addListenersToUIButtons(listsListContainerCloseBtns, displayListsPane);
 }
 
@@ -154,7 +184,8 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function handleDeleteAllBtnClicked() {
-  handleModal(infoModal);
+  let msg = `Are you sure you want to delete all items?`;
+  handleModal(infoModal, msg);
 
   let confirmBtn = infoModal.querySelector(".btn-modal-confirm");
   let cancelBtn = infoModal.querySelector(".btn-modal-cancel");
