@@ -5,11 +5,8 @@
 }
 
 :root {
-  /* --color-bg-item-recurrent: #2e2555; */
-  /* --color-bg-item-recurrent: #3a8ce5; */
-  --color-bg-item-recurrent: rgba(22, 59, 113, 1);
-  /* --color-bg-item-temporal: #423872; */
-  --color-bg-item-temporal: rgba(36, 78, 142, 1);
+  --color-bg-item-recurrent: rgba(86, 126, 100, 1);
+  --color-bg-item-temporal: rgb(78, 137, 99);
   --color-link: #1e4279;
   --color-confirm-green: #03c13f;
   --color-cancel-red: #cf2121;

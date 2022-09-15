@@ -56,7 +56,7 @@ lockUnlockBtn.addEventListener("click", (e) => handleLockBtnClicked(e));
 deleteAllItemsBtn.addEventListener("click", (e) => {
   handleModal(
     infoModal,
-    "Are you sure you want to delete ALL of the items on your list?",
+    "Are you sure you want to delete ALL of the unlocked items on your list?",
     handleDeleteAllBtnClicked
   );
 });
@@ -531,7 +531,9 @@ function displayItemList(itemList) {
 
     let priceTotalDiv = document.createElement("div");
     priceTotalDiv.setAttribute("class", "container-items-price-total");
-    priceTotalDiv.innerHTML = `<p class="price-label">Estimated total price is <span>$${listPriceTotal}</span></p>`;
+    priceTotalDiv.innerHTML = `<p class="price-label">Estimated total price is <span>$${listPriceTotal.toFixed(
+      2
+    )}</span></p>`;
     list.appendChild(priceTotalDiv);
 
     deleteItemBtns = document.querySelectorAll(".btn-delete-item");
@@ -575,6 +577,7 @@ async function fetchAvgPrice(itemName) {
   let dollars = Math.floor(Math.random() * 20);
   let cents = Math.floor(Math.random() * (99 - 10) + 10);
 
+  console.log(`${dollars}.${cents}`);
   return parseFloat(`${dollars}.${cents}`);
   // return 0;
   let url = `https://cors-anywhere.herokuapp.com/https://www.walmart.com/search?q=${itemName}`;
