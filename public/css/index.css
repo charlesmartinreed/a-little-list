@@ -15,6 +15,7 @@
   --color-cancel-red: #cf2121;
   --color-text-light-mode: #222;
   --color-body-bg-light-mode: goldenrod;
+  --color-body-bg-light-mode-lightened: #c5ae76;
   --color-text-box-bg: rgba(22, 59, 113, 0.5);
 }
 
@@ -76,7 +77,7 @@ input::placeholder {
 
 .modal {
   display: none;
-  background-color: rgb(197, 174, 118);
+  background-color: var(--color-body-bg-light-mode-lightened);
   border: 3px solid #ececec;
 
   /* outline: auto; */

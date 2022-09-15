@@ -487,6 +487,7 @@ function displayItemList(itemList) {
   checkUIButtonsState();
 
   let html = "";
+  let listPriceTotal = 0;
 
   if (currentListItems.length === 0) {
     html += `<div class="empty-item-list">Your list is empty!?</div>`;
@@ -499,6 +500,7 @@ function displayItemList(itemList) {
   for (let item of arrangedItems) {
     let { item_name, item_id, item_avg_price, item_is_recurrent, item_notes } =
       item;
+    listPriceTotal += item_avg_price;
     html += `
           <div class="${
             item_is_recurrent
@@ -526,6 +528,11 @@ function displayItemList(itemList) {
           `;
 
     list.innerHTML = html;
+
+    let priceTotalDiv = document.createElement("div");
+    priceTotalDiv.setAttribute("class", "container-items-price-total");
+    priceTotalDiv.innerHTML = `<p class="price-label">Estimated total price is <span>$${listPriceTotal}</span></p>`;
+    list.appendChild(priceTotalDiv);
 
     deleteItemBtns = document.querySelectorAll(".btn-delete-item");
     lockedItemBtns = document.querySelectorAll(".btn-lock-item");
@@ -565,7 +572,11 @@ function generateID() {
 }
 
 async function fetchAvgPrice(itemName) {
-  return 0;
+  let dollars = Math.floor(Math.random() * 20);
+  let cents = Math.floor(Math.random() * (99 - 10) + 10);
+
+  return parseFloat(`${dollars}.${cents}`);
+  // return 0;
   let url = `https://cors-anywhere.herokuapp.com/https://www.walmart.com/search?q=${itemName}`;
 
   let fetchedPrice;
