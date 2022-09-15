@@ -53,7 +53,13 @@ listNameInputEl.addEventListener("keyup", (e) =>
 
 listsListToggleBtn.addEventListener("click", (e) => displayListsPane());
 lockUnlockBtn.addEventListener("click", (e) => handleLockBtnClicked(e));
-deleteAllItemsBtn.addEventListener("click", () => handleDeleteAllBtnClicked());
+deleteAllItemsBtn.addEventListener("click", (e) => {
+  handleModal(
+    infoModal,
+    "Are you sure you want to delete ALL of the items on your list?",
+    handleDeleteAllBtnClicked
+  );
+});
 undoDeleteBtn.addEventListener("click", () => handleUndoBtnClicked());
 
 addNewItemBtn.addEventListener("click", (e) => addNewItem(e));
@@ -82,18 +88,20 @@ function createNewList() {
     list_items: [],
   });
 
-  console.log("added new list", allItems);
-
   displayItemList(allItems);
 }
 
-function deleteList(e) {
+function deleteList(target) {
+  // console.log(
+  //   target.parentElement.previousElementSibling.children[0].getAttribute(
+  //     "data-list-id"
+  //   )
+  // );
+
   let id =
-    e.target.parentElement.previousElementSibling.children[0].getAttribute(
+    target.parentElement.previousElementSibling.children[0].getAttribute(
       "data-list-id"
     );
-
-  console.log(id);
 
   allItems = allItems.filter((list) => list.list_id !== id);
 
@@ -108,7 +116,6 @@ function deleteList(e) {
     displayItemList(allItems);
   }
 
-  console.log(allItems);
   listsListContainer.classList.remove("active");
 }
 
@@ -169,7 +176,14 @@ function generateListsPane() {
     listsListSwitchCurrentBtns,
     switchCurrentlyDisplayedList
   );
-  addListenersToUIButtons(deleteListBtns, deleteList);
+  addListenersToUIButtons(deleteListBtns, (e) => {
+    handleModal(
+      infoModal,
+      "Are you sure you want to delete this list?",
+      deleteList,
+      e.target
+    );
+  });
   addListenersToUIButtons(listsListContainerCloseBtns, displayListsPane);
 }
 
@@ -184,32 +198,29 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function handleDeleteAllBtnClicked() {
-  let msg = `Are you sure you want to delete all items?`;
-  handleModal(infoModal, msg);
-
-  let confirmBtn = infoModal.querySelector(".btn-modal-confirm");
-  let cancelBtn = infoModal.querySelector(".btn-modal-cancel");
+  console.log("delete all triggered");
+  // let confirmBtn = infoModal.querySelector(".btn-modal-confirm");
+  // let cancelBtn = infoModal.querySelector(".btn-modal-cancel");
 
   let matchedList = allItems.find((list) => list.list_name === activeListName);
 
-  confirmBtn.addEventListener("click", () => {
-    let pendingDeletedItems = matchedList.list_items.filter(
-      ({ item_is_recurrent }) => !item_is_recurrent
-    );
+  let pendingDeletedItems = matchedList.list_items.filter(
+    ({ item_is_recurrent }) => !item_is_recurrent
+  );
 
-    moveToDeletedItems(pendingDeletedItems);
+  moveToDeletedItems(pendingDeletedItems);
 
-    matchedList.list_items = matchedList.list_items.filter(
-      ({ item_is_recurrent }) => item_is_recurrent
-    );
+  matchedList.list_items = matchedList.list_items.filter(
+    ({ item_is_recurrent }) => item_is_recurrent
+  );
 
-    handleDeleteAllBtnClicked();
-    displayItemList(allItems);
-  });
+  displayItemList(allItems);
 
-  cancelBtn.addEventListener("click", () => {
-    handleDeleteAllBtnClicked();
-  });
+  // confirmBtn.addEventListener("click", () => {});
+
+  // cancelBtn.addEventListener("click", () => {
+  //   handleDeleteAllBtnClicked();
+  // });
 }
 
 function moveToDeletedItems(itemObj) {
@@ -284,9 +295,29 @@ function handleUnlockAllItems() {
   displayItemList(allItems);
 }
 
-function handleModal(modal) {
-  modal.classList.toggle("active");
-  pageContainer.classList.toggle("modal-active");
+function handleModal(modal, modalMsg, cb, target = null) {
+  let modalTextEl = modal.querySelector(".modal-info-msg");
+  modalTextEl.textContent = modalMsg;
+
+  let confirmBtn = infoModal.querySelector(".btn-modal-confirm");
+  let cancelBtn = infoModal.querySelector(".btn-modal-cancel");
+
+  modal.classList.add("active");
+  pageContainer.classList.add("modal-active");
+
+  [confirmBtn, cancelBtn].forEach((btn) =>
+    btn.addEventListener("click", (e) => {
+      if (e.target.classList.contains("btn-modal-confirm")) {
+        if (target) {
+          cb(target);
+        } else {
+          cb();
+        }
+      }
+      modal.classList.remove("active");
+      pageContainer.classList.remove("modal-active");
+    })
+  );
 }
 
 function handleSortBtnClicked() {
@@ -495,7 +526,6 @@ function displayItemList(itemList) {
           `;
 
     list.innerHTML = html;
-    console.log(list.innerHTML);
 
     deleteItemBtns = document.querySelectorAll(".btn-delete-item");
     lockedItemBtns = document.querySelectorAll(".btn-lock-item");

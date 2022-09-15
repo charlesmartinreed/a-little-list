@@ -47,19 +47,40 @@ input::placeholder {
   color: inherit;
 }
 
-.btn {
+.modal .btn,
+#btn-login,
+#btn-signup {
   cursor: pointer;
   background: none;
   outline: none;
-  border: none;
+  border: 3px solid var(--color-text-light-mode);
+  background-color: none;
+
+  border-radius: 5px;
+  padding: 1em 2em;
+  font-size: 1.2em;
+  margin: 0 1rem;
+  font-weight: 200;
+  letter-spacing: 2px;
+  color: var(--color-text-light-mode);
+
+  position: relative;
+  transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn:hover,
+.btn:focus {
+  transform: scale(1.1);
+  outline: auto;
 }
 
 .modal {
   display: none;
-  background-color: var(--color-text-light-mode);
-  border-color: 1px solid goldenrod;
+  background-color: rgb(197, 174, 118);
+  border: 3px solid #ececec;
+
   /* outline: auto; */
-  color: #ececec;
+  color: var(--color-text-light-mode);
 
   position: absolute;
   top: 50%;
@@ -81,8 +102,6 @@ input::placeholder {
   text-align: center;
   line-height: 2rem;
   letter-spacing: 1.5px;
-  /* font-weight: 300; */
-  /* text-transform: uppercase; */
 }
 
 .modal.login-modal {
@@ -121,8 +140,7 @@ input::placeholder {
 
 .modal.login-modal.active div input {
   background: none;
-  border: 1px solid #ececec;
-  color: #ececec;
+  border: 3px solid var(--color-text-light-mode);
   /* border-bottom: 1px solid goldenrod; */
 
   width: 100%;
@@ -211,7 +229,7 @@ input::placeholder {
 #cta-landing-page #btn-login,
 #cta-landing-page #btn-signup,
 #btn-login-modal-submit {
-  cursor: pointer;
+  /* cursor: pointer;
   background: none;
   border-radius: 5px;
   padding: 1em 2em;
@@ -222,7 +240,7 @@ input::placeholder {
   color: var(--color-text-light-mode);
 
   position: relative;
-  transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); */
 
   /* box-shadow: 10px -6px 1px rgba(0, 0, 0, 0.8), -10px 6px 1px rgba(0, 0, 0, 0.8); */
 }
@@ -242,7 +260,7 @@ input::placeholder {
 }
 
 #btn-login-modal-submit {
-  background-color: goldenrod;
+  /* background-color: goldenrod; */
   -webkit-filter: grayscale(0);
   filter: grayscale(0);
   /* position: absolute; */
@@ -251,6 +269,7 @@ input::placeholder {
 
 #btn-login-modal-submit:hover,
 #btn-login-modal-submit:focus {
+  outline-color: var(--color-confirm-green);
   box-shadow: 10px 6px 1px rgba(0, 0, 0, 0.8);
 }
 
