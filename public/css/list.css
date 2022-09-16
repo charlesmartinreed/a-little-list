@@ -435,6 +435,14 @@ nav .btn:focus,
   text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.4);
 }
 
+.modal .btn-modal-confirm {
+  border-color: var(--color-confirm-green);
+}
+
+.modal .btn-modal-cancel {
+  border-color: var(--color-cancel-red);
+}
+
 #modal-info {
   height: 600px;
   width: 400px;
@@ -459,17 +467,6 @@ nav .btn:focus,
   content: attr(data-msg);
 }
 
-/* #modal-info .btn {
-  cursor: pointer;
-  border: none;
-  border-radius: 3px;
-  padding: 0.5rem 1rem;
-  width: 120px;
-  margin: 0 8px;
-  -webkit-filter: grayscale(0);
-  filter: grayscale(0);
-} */
-
 #modal-info .modal-btn-container {
   display: flex;
   flex-direction: row;
@@ -477,22 +474,14 @@ nav .btn:focus,
   align-items: center;
 }
 
-#modal-help.active #btn-close-modal:focus,
-#modal-help.active #btn-close-modal:hover,
+#modal-help.active .btn-modal-confirm:focus,
+#modal-help.active .btn-modal-confirm:hover,
 #modal-info .btn-modal-confirm:hover,
 #modal-info .btn-modal-cancel:hover,
 #modal-info .btn-modal-confirm:focus,
 #modal-info .btn-modal-cancel:focus {
   transform: scale(1.1);
   box-shadow: -10px 6px 1px rgba(0, 0, 0, 0.8);
-}
-
-#modal-info .btn-modal-confirm {
-  outline-color: var(--color-confirm-green);
-}
-
-#modal-info .btn-modal-cancel {
-  outline-color: var(--color-cancel-red);
 }
 
 #modal-help {
@@ -530,11 +519,6 @@ nav .btn:focus,
 
 #modal-help.active div:last-of-type {
   align-self: center;
-}
-
-#modal-help.active #btn-close-modal:focus,
-#modal-help.active #btn-close-modal:hover {
-  outline-color: var(--color-confirm-green);
 }
 
 #nav-list-page .btn-icon,
@@ -662,11 +646,6 @@ span.down-arrow.active {
     font-size: 1rem;
     overflow-y: hidden;
     scroll-behavior: auto;
-  }
-
-  #modal-help.active #btn-close-modal {
-    font-size: 1.35rem;
-    outline-color: var(--color-confirm-green);
   }
 
   #modal-info .btn-modal-confirm {

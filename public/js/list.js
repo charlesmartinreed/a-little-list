@@ -22,7 +22,7 @@ const undoDeleteBtn = document.querySelector(".btn-undo-delete");
 const searchItemsBtn = document.querySelector("#btn-search-item-list");
 const sortItemsBtn = document.querySelector(".btn-sort-item-list");
 const helpBtn = document.querySelector(".btn-help");
-const closeHelpBtn = document.querySelector("#btn-close-modal");
+// const closeHelpBtn = document.querySelector("#btn-close-modal");
 
 let deleteItemBtns;
 let lockedItemBtns;
@@ -66,8 +66,8 @@ addNewItemBtn.addEventListener("click", (e) => addNewItem(e));
 searchItemsBtn.addEventListener("click", () => handleSearchBtnClicked());
 sortItemsBtn.addEventListener("click", () => handleSortBtnClicked());
 
-helpBtn.addEventListener("click", () => handleModal(helpModal));
-closeHelpBtn.addEventListener("click", () => handleModal(helpModal));
+helpBtn.addEventListener("click", () => handleModal(helpModal, null, null));
+// closeHelpBtn.addEventListener("click", () => handleModal(helpModal));
 
 addModeInput.addEventListener("keypress", (e) => {
   if (e.value === "") return;
@@ -277,7 +277,7 @@ function handleLockAllItems() {
   ).list_items;
 
   currentListItems.forEach((item) => {
-    item.item_is_recurrent = true;
+    toggleRecurrentItem(null, item.item_id);
   });
 
   displayItemList(allItems);
@@ -289,7 +289,7 @@ function handleUnlockAllItems() {
   ).list_items;
 
   currentListItems.forEach((item) => {
-    item.item_is_recurrent = false;
+    toggleRecurrentItem(null, item.item_id);
   });
 
   displayItemList(allItems);
@@ -297,27 +297,38 @@ function handleUnlockAllItems() {
 
 function handleModal(modal, modalMsg, cb, target = null) {
   let modalTextEl = modal.querySelector(".modal-info-msg");
-  modalTextEl.textContent = modalMsg;
 
-  let confirmBtn = infoModal.querySelector(".btn-modal-confirm");
-  let cancelBtn = infoModal.querySelector(".btn-modal-cancel");
+  if (modalMsg) {
+    modalTextEl.textContent = modalMsg;
+  }
+
+  let confirmBtn = modal.querySelector(".btn-modal-confirm");
+  let cancelBtn = modal.querySelector(".btn-modal-cancel");
 
   modal.classList.add("active");
   pageContainer.classList.add("modal-active");
 
-  [confirmBtn, cancelBtn].forEach((btn) =>
-    btn.addEventListener("click", (e) => {
-      if (e.target.classList.contains("btn-modal-confirm")) {
-        if (target) {
-          cb(target);
-        } else {
-          cb();
-        }
+  confirmBtn.addEventListener("click", (e) => {
+    if (cb) {
+      if (target) {
+        cb(target);
+      } else {
+        cb();
       }
-      modal.classList.remove("active");
-      pageContainer.classList.remove("modal-active");
-    })
-  );
+    }
+    closeModal(modal);
+  });
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", (e) => {
+      closeModal(modal);
+    });
+  }
+}
+
+function closeModal(modal) {
+  modal.classList.remove("active");
+  pageContainer.classList.remove("modal-active");
 }
 
 function handleSortBtnClicked() {
@@ -427,16 +438,25 @@ function deleteItem(e) {
   displayItemList(allItems);
 }
 
-function toggleRecurrentItem(e) {
-  let itemId =
-    e.target.parentElement.previousElementSibling.getAttribute("data-item-id");
+function toggleRecurrentItem(e, id) {
+  let itemId;
 
-  allItems.map((list) => {
-    if (list.list_name === activeListName) {
-      let item = list.list_items.find((item) => item.item_id === itemId);
-      item.item_is_recurrent = !item.item_is_recurrent;
-    }
-  });
+  if (e === null) {
+    itemId = id;
+  } else {
+    itemId =
+      e.target.parentElement.previousElementSibling.getAttribute(
+        "data-item-id"
+      );
+  }
+
+  console.log(itemId);
+
+  let selectedItem = allItems
+    .find((list) => list.list_name === activeListName)
+    .list_items.find((item) => item.item_id === itemId);
+
+  selectedItem.item_is_recurrent = !selectedItem.item_is_recurrent;
 
   displayItemList(allItems);
 }
@@ -483,6 +503,8 @@ function displayItemList(itemList) {
   let currentListItems = itemList.find(
     (list) => list.list_name === activeListName
   ).list_items;
+
+  console.log(currentListItems);
 
   checkUIButtonsState();
 
