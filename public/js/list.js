@@ -510,6 +510,7 @@ function displayItemList(itemList) {
 
   let html = "";
   let listPriceTotal = 0;
+  let currentTaxRate = 8.25;
 
   if (currentListItems.length === 0) {
     html += `<div class="empty-item-list">Your list is empty!?</div>`;
@@ -551,12 +552,31 @@ function displayItemList(itemList) {
 
     list.innerHTML = html;
 
+    function calculateTotalWithTax() {
+      return listPriceTotal + (listPriceTotal * currentTaxRate) / 100;
+    }
+
     let priceTotalDiv = document.createElement("div");
     priceTotalDiv.setAttribute("class", "container-items-price-total");
-    priceTotalDiv.innerHTML = `<p class="price-label">Estimated total price is <span>$${listPriceTotal.toFixed(
+    priceTotalDiv.innerHTML = `
+    <p class="price-label">Estimated total price is <span>$${calculateTotalWithTax().toFixed(
       2
-    )}</span></p>`;
+    )}</span>
+    </p>
+    <div class="price-total-tax-div"><p class="tax-label">Current tax rate is </p> <input id="tax-input" type="number" min=1.0 max="15.0" step="0.01" placeholder=${currentTaxRate} value=${currentTaxRate} /></div>
+    
+    `;
+
     list.appendChild(priceTotalDiv);
+
+    document.querySelectorAll("#tax-input").forEach((taxInput) =>
+      taxInput.addEventListener("change", (e) => {
+        currentTaxRate = taxInput.value;
+        priceTotalDiv.querySelector(
+          ".price-label span"
+        ).textContent = `$${calculateTotalWithTax().toFixed(2)}`;
+      })
+    );
 
     deleteItemBtns = document.querySelectorAll(".btn-delete-item");
     lockedItemBtns = document.querySelectorAll(".btn-lock-item");
