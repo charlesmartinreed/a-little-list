@@ -17,7 +17,7 @@ const CORS_PORT = process.env.CORS_PORT || 5500;
 const app = express();
 createClient(`${process.env.SUPABASE_DB_URL}`, `${process.env.SUPABASE_DB_PW}`);
 
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(`${__dirname}`));
 app.use(express.json());
 
 app.get("/", (req, res) => {
