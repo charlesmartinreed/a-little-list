@@ -618,6 +618,7 @@ span.down-arrow.active {
   }
 
   .container-items {
+    height: 60vh;
     width: 90%;
   }
 

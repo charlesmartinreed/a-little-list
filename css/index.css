@@ -331,6 +331,10 @@ input::placeholder {
     font-size: 12px;
   }
 
+  body {
+    overflow-y: auto;
+  }
+
   .modal.login-modal {
     height: 80%;
     width: 80%;
