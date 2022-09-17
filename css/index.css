@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -193,6 +195,8 @@ input::placeholder {
 
   -webkit-animation: riseAndFall 3s linear;
   animation: riseAndFall 3s linear;
+
+  font-family: "Noto Color Emoji", sans-serif;
 }
 
 #emoji-carousel .emoji-icon {
