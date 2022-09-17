@@ -207,15 +207,17 @@ function init() {
     allItems = [];
   } else {
     allItems = localStorageEnabledResult;
-    activeListName = allItems[0].list_name;
-    listNameInputEl.value = activeListName;
   }
 
   if (allItems.length === 0) {
     createNewList();
   }
 
-  displayItemList(allItems);
+  if (allItems.length >= 1) {
+    activeListName = allItems[0].list_name;
+    listNameInputEl.value = activeListName;
+    displayItemList(allItems);
+  }
 }
 
 function handleDeleteAllBtnClicked() {
