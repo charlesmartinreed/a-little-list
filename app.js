@@ -5,6 +5,7 @@ require("dotenv").config();
 // import fetch from "node-fetch";
 // const fetch = require("node-fetch");
 const { JSDOM } = require("jsdom");
+const { createClient } = require("@supabase/supabase-js");
 
 const path = require("path");
 const express = require("express");
@@ -14,6 +15,7 @@ const PORT = process.env.SERVER_PORT || 6500;
 const CORS_PORT = process.env.CORS_PORT || 5500;
 
 const app = express();
+createClient(`${process.env.SUPABASE_DB_URL}`, `${process.env.SUPABASE_DB_PW}`);
 
 // let proxy = require("cors-anywhere")
 //   .createServer({
@@ -106,6 +108,8 @@ app.listen(PORT, HOST, () => console.log("now listening on PORT", HOST, PORT));
 //   let updatedItemList = await fetchItemsFromDB();
 //   res.json(updatedItemList);
 // });
+
+async function handleLogin(user, pw) {}
 
 async function fetchItemsFromDB() {
   // TODO: Pull from an actual DB...

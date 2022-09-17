@@ -1,4 +1,5 @@
 // import { fetchWebSiteResults } from "../utils/utils.js";
+import { readListFromLocalStorage, writeToLocalStorage } from "./utils.js";
 
 let sortByDescending = true;
 let activeListName = null;
@@ -38,7 +39,7 @@ let inputContainer = document.querySelector(".container-input-box");
 let addModeInput = document.querySelector("#input-add-item");
 let searchModeInput = document.querySelector("#input-search-item");
 
-let allItems = [];
+let allItems;
 let deletedItems = [];
 
 // grab the price data, if possible
@@ -193,9 +194,30 @@ function displayListsPane() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  createNewList();
-  displayItemList(allItems);
+  init();
+  // readListFromLocalStorage();
+  // createNewList();
+  // displayItemList(allItems);
 });
+
+function init() {
+  let localStorageEnabledResult = readListFromLocalStorage();
+
+  if (typeof localStorageEnabledResult === Error) {
+    handleModal(infoModal, localStorageEnabledResult.message, null, null);
+    allItems = [];
+  } else {
+    allItems = localStorageEnabledResult;
+    activeListName = allItems[0].list_name;
+    listNameInputEl.value = activeListName;
+  }
+
+  if (allItems.length === 0) {
+    createNewList();
+  }
+
+  displayItemList(allItems);
+}
 
 function handleDeleteAllBtnClicked() {
   console.log("delete all triggered");
@@ -450,8 +472,6 @@ function toggleRecurrentItem(e, id) {
       );
   }
 
-  console.log(itemId);
-
   let selectedItem = allItems
     .find((list) => list.list_name === activeListName)
     .list_items.find((item) => item.item_id === itemId);
@@ -468,6 +488,7 @@ function updateItemsList(newItemObj) {
     }
   });
 
+  // writeToLocalStorage(allItems);
   displayItemList(allItems);
 }
 
@@ -586,6 +607,8 @@ function displayItemList(itemList) {
     addListenersToUIButtons(lockedItemBtns, toggleRecurrentItem);
     addListenersToUIButtons(showNotesBtns, toggleItemNotes);
   }
+
+  writeToLocalStorage(allItems);
 }
 
 function addListenersToUIButtons(buttons, cb) {

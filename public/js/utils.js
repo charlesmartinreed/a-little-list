@@ -1,5 +1,37 @@
 console.log("utils loaded");
 
+export function readListFromLocalStorage() {
+  // check for LocalStorage, ask for permission if needed
+  let isStorageEnabled = localStorageAllowed("localStorage");
+
+  if (isStorageEnabled) {
+    if (!localStorage.getItem("littlelistLocalList")) {
+      localStorage.setItem("littlelistLocalList", JSON.stringify([]));
+    }
+    return JSON.parse(localStorage.getItem("littlelistLocalList"));
+  } else {
+    return isStorageEnabled;
+  }
+}
+
+export function writeToLocalStorage(listObject) {
+  localStorage.setItem("littlelistLocalList", JSON.stringify(listObject));
+}
+
+function localStorageAllowed(storageType) {
+  try {
+    let storage = window[storageType];
+    const x = "__storage_test__";
+    storage.setItem(x, x);
+    storage.removeItem(x);
+    return true;
+  } catch (e) {
+    return new Error(
+      "Hi! It appears that your browser's storage support is enabled. In order to store your lists locally, you'll have to enable Local Storage support in your browser's settings."
+    );
+  }
+}
+
 export async function fetchWebSiteResults(item) {
   let { item_name, item_price_results, item_avg_price } = item;
   let proxyURL = "http://localhost:6500";
