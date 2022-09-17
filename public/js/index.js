@@ -67,7 +67,7 @@ function renderEmojiContainer() {
 }
 
 function returnRandomEmojiArr() {
-  let idx = Math.round(Math.random() * emojiIcons.length);
+  let idx = Math.floor(Math.random() * emojiIcons.length);
   let emoji = emojiIcons[idx];
   return emoji;
 }
@@ -77,8 +77,6 @@ function returnRandomEmojiArr() {
 // );
 
 function handleAccountButtonClicked(btn) {
-  console.log("acct button clicked");
-
   loginModalHeader.textContent = btn.getAttribute("data-heading-text");
   submitBtn.innerText = btn.getAttribute("data-btn-text");
 
@@ -116,12 +114,10 @@ function toggleLoginModal() {
 }
 
 function login(user, pass) {
-  console.log("logging in old user", "user:", user, "pass", pass);
   toggleLoginModal();
 }
 
 function signup(user, pass) {
-  console.log("signing up new user", "user:", user, "pass", pass);
   toggleLoginModal();
 }
 

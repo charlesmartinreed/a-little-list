@@ -11,8 +11,8 @@
   --color-confirm-green: #03c13f;
   --color-cancel-red: #cf2121;
   --color-text-light-mode: #222;
-  --color-body-bg-light-mode: goldenrod;
-  --color-body-bg-light-mode-lightened: #c5ae76;
+  --color-body-bg-light-mode: #e7e0d0;
+  --color-body-bg-light-mode-lightened: #c4b696;
   --color-text-box-bg: rgba(22, 59, 113, 0.5);
 }
 
@@ -289,6 +289,41 @@ input::placeholder {
 #btn-signup:hover,
 #btn-signup:focus {
   box-shadow: 10px 6px 1px rgba(0, 0, 0, 0.8);
+}
+
+/* KEYFRAME ANIMATIONS */
+@-webkit-keyframes riseAndFall {
+  0% {
+    transform: translateY(25px);
+    opacity: 0.5;
+    -webkit-filter: blur(8px);
+    filter: blur(8px);
+  }
+
+  20%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    -webkit-filter: blur(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes riseAndFall {
+  0% {
+    transform: translateY(25px);
+    opacity: 0.5;
+    -webkit-filter: blur(8px);
+    filter: blur(8px);
+  }
+
+  20%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    -webkit-filter: blur(0);
+    filter: blur(0);
+  }
 }
 
 @media screen and (max-width: 500px) {

@@ -220,10 +220,6 @@ function init() {
 }
 
 function handleDeleteAllBtnClicked() {
-  console.log("delete all triggered");
-  // let confirmBtn = infoModal.querySelector(".btn-modal-confirm");
-  // let cancelBtn = infoModal.querySelector(".btn-modal-cancel");
-
   let matchedList = allItems.find((list) => list.list_name === activeListName);
 
   let pendingDeletedItems = matchedList.list_items.filter(
@@ -525,8 +521,6 @@ function displayItemList(itemList) {
     (list) => list.list_name === activeListName
   ).list_items;
 
-  console.log(currentListItems);
-
   checkUIButtonsState();
 
   let html = "";
@@ -639,13 +633,12 @@ function generateID() {
 }
 
 async function fetchAvgPrice(itemName) {
-  let dollars = Math.floor(Math.random() * 20);
-  let cents = Math.floor(Math.random() * (99 - 10) + 10);
+  // let dollars = Math.floor(Math.random() * 20);
+  // let cents = Math.floor(Math.random() * (99 - 10) + 10);
 
-  console.log(`${dollars}.${cents}`);
-  return parseFloat(`${dollars}.${cents}`);
+  // return parseFloat(`${dollars}.${cents}`);
   // return 0;
-  let url = `https://cors-anywhere.herokuapp.com/https://www.walmart.com/search?q=${itemName}`;
+  let url = `https://cors-anywhere.9pfs.repl.co/https://www.walmart.com/search?q=${itemName}`;
 
   let fetchedPrice;
 
@@ -656,16 +649,11 @@ async function fetchAvgPrice(itemName) {
       },
     });
 
-    console.log("fetching for", url);
     let rawBody = await res.text();
-    console.log("fetched body is", rawBody.length, "characters long");
     fetchedPrice = convertToHTMLAndParse(rawBody);
   } catch (e) {
-    console.error(e);
     fetchedPrice = 0;
-    console.log("could not fetch", fetchedPrice);
   }
-
   return fetchedPrice;
 }
 
@@ -676,10 +664,6 @@ function convertToHTMLAndParse(resBody) {
   let itemDivs = Array.from(doc.querySelectorAll("div")).filter(
     (div) => div.getAttribute("data-automation-id") === "product-price"
   );
-
-  // let prices = Array.from(itemDivs.childNodes).filter((node) =>
-  //   node.innerText.match(/[$][0-9]+(\.[0-9]{1,2})?$/gm)
-  // );
 
   let prices = itemDivs
     .map((div) => div.innerHTML)

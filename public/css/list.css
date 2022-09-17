@@ -90,7 +90,7 @@ nav .btn {
   margin: 2px 0;
   padding: 3rem 0;
   line-height: 1.8rem;
-  background-color: goldenrod;
+  background-color: rgba(51, 51, 51, 0.2);
 }
 
 .container-lists-list .btn {
@@ -311,10 +311,6 @@ nav .btn {
   justify-content: center;
   align-items: flex-end;
   margin-bottom: 8px;
-}
-
-.container-items-price-total .price-label span {
-  text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.6);
 }
 
 .container-item-list {
