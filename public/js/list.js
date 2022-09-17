@@ -1,4 +1,3 @@
-// import { fetchWebSiteResults } from "../utils/utils.js";
 import { readListFromLocalStorage, writeToLocalStorage } from "./utils.js";
 
 let sortByDescending = true;
@@ -638,14 +637,16 @@ async function fetchAvgPrice(itemName) {
 
   // return parseFloat(`${dollars}.${cents}`);
   // return 0;
-  let url = `https://cors-anywhere.9pfs.repl.co/https://www.walmart.com/search?q=${itemName}`;
+  let url = `https://cors-anywhere.herokuapp.com/corsdemo/https://www.walmart.com/search?q=${itemName}`;
 
   let fetchedPrice;
 
   try {
     let res = await fetch(url, {
+      mode: "no-cors",
       headers: {
         Origin: "https://www.walmart.com",
+        "Access-Control-Allow-Origin": "*",
       },
     });
 
