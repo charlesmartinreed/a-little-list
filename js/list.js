@@ -1,4 +1,8 @@
-import { readListFromLocalStorage, writeToLocalStorage } from "./utils.js";
+import {
+  readListFromLocalStorage,
+  writeToLocalStorage,
+  fetchAvgItemPrice,
+} from "./utils.js";
 
 let sortByDescending = true;
 let activeListName = null;
@@ -92,12 +96,6 @@ function createNewList() {
 }
 
 function deleteList(target) {
-  // console.log(
-  //   target.parentElement.previousElementSibling.children[0].getAttribute(
-  //     "data-list-id"
-  //   )
-  // );
-
   let id =
     target.parentElement.previousElementSibling.children[0].getAttribute(
       "data-list-id"
@@ -416,11 +414,11 @@ function searchItemsList(e) {
 }
 
 async function addNewItem(e) {
-  let itemValue = addModeInput.value;
+  let itemValue = addModeInput.value.toLowerCase();
 
   let itemObject;
 
-  let avgPrice = await fetchAvgPrice(itemValue);
+  let avgPrice = await fetchAvgItemPrice(itemValue);
 
   if (addModeInput.value !== "") {
     itemObject = {
@@ -548,7 +546,11 @@ function displayItemList(itemList) {
           }">
               <div class="list-item" data-item-id="${item_id}">
                 <p class="list-item-title">${item_name}</p>
-                <p class="list-item-price">Average price of <span>$${item_avg_price}</span></p>
+                <p class="list-item-price">Average price of <span>${formatPriceAsCurrency(
+                  item_avg_price,
+                  "en-US",
+                  "USD"
+                )}</span></p>
               </div>
               <div class="list-item-delete">
               <button class="btn btn-show-notes">📝</button>
@@ -569,15 +571,23 @@ function displayItemList(itemList) {
     list.innerHTML = html;
 
     function calculateTotalWithTax() {
-      return listPriceTotal + (listPriceTotal * currentTaxRate) / 100;
+      let calculatedPrice =
+        listPriceTotal + (listPriceTotal * currentTaxRate) / 100;
+
+      return formatPriceAsCurrency(calculatedPrice, "en-US", "USD");
+    }
+
+    function formatPriceAsCurrency(price, locale, currencyType) {
+      return new Intl.NumberFormat(locale, {
+        style: "currency",
+        currency: currencyType,
+      }).format(price);
     }
 
     let priceTotalDiv = document.createElement("div");
     priceTotalDiv.setAttribute("class", "container-items-price-total");
     priceTotalDiv.innerHTML = `
-    <p class="price-label">Estimated total price is <span>$${calculateTotalWithTax().toFixed(
-      2
-    )}</span>
+    <p class="price-label">Estimated total price is <span>${calculateTotalWithTax()}</span>
     </p>
     <div class="price-total-tax-div"><p class="tax-label">Current tax rate is </p> <input id="tax-input" type="number" min=1.0 max="15.0" step="0.01" placeholder=${currentTaxRate} value=${currentTaxRate} /></div>
     
@@ -590,7 +600,7 @@ function displayItemList(itemList) {
         currentTaxRate = taxInput.value;
         priceTotalDiv.querySelector(
           ".price-label span"
-        ).textContent = `$${calculateTotalWithTax().toFixed(2)}`;
+        ).textContent = `$${calculateTotalWithTax()}`;
       })
     );
 
@@ -633,54 +643,22 @@ function generateID() {
   return id;
 }
 
-async function fetchAvgPrice(itemName) {
-  // let dollars = Math.floor(Math.random() * 20);
-  // let cents = Math.floor(Math.random() * (99 - 10) + 10);
-
-  // return parseFloat(`${dollars}.${cents}`);
-  // return 0;
-  let url = `https://cors-anywhere.herokuapp.com/corsdemo/https://www.walmart.com/search?q=${itemName}`;
-
-  let fetchedPrice;
-
-  try {
-    let res = await fetch(url, {
-      mode: "no-cors",
-      headers: {
-        Origin: "https://www.walmart.com",
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-
-    let rawBody = await res.text();
-    fetchedPrice = convertToHTMLAndParse(rawBody);
-  } catch (e) {
-    fetchedPrice = 0;
-  }
-  return fetchedPrice;
-}
-
 function convertToHTMLAndParse(resBody) {
-  let parser = new DOMParser();
-  let doc = parser.parseFromString(resBody, "text/html");
-
-  let itemDivs = Array.from(doc.querySelectorAll("div")).filter(
-    (div) => div.getAttribute("data-automation-id") === "product-price"
-  );
-
-  let prices = itemDivs
-    .map((div) => div.innerHTML)
-    .map((divHTML) => {
-      let matched = divHTML.match(/[$][0-9]+(\.[0-9]{1,2})?/);
-
-      if (matched !== null) {
-        return Number(matched[0].replace(/[^0-9\.-]+/g, ""));
-      }
-    });
-
-  let avgPrice = (prices.reduce((a, b) => a + b) / prices.length).toFixed(2);
-
-  return avgPrice;
+  // let parser = new DOMParser();
+  // let doc = parser.parseFromString(resBody, "text/html");
+  // let itemDivs = Array.from(doc.querySelectorAll("div")).filter(
+  //   (div) => div.getAttribute("data-automation-id") === "product-price"
+  // );
+  // let prices = itemDivs
+  //   .map((div) => div.innerHTML)
+  //   .map((divHTML) => {
+  //     let matched = divHTML.match(/[$][0-9]+(\.[0-9]{1,2})?/);
+  //     if (matched !== null) {
+  //       return Number(matched[0].replace(/[^0-9\.-]+/g, ""));
+  //     }
+  //   });
+  // let avgPrice = (prices.reduce((a, b) => a + b) / prices.length).toFixed(2);
+  // return avgPrice;
 }
 
 function generateNewListName() {

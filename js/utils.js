@@ -32,7 +32,15 @@ function localStorageAllowed(storageType) {
   }
 }
 
-export async function fetchWebSiteResults() {
- 
-}
+export async function fetchAvgItemPrice(itemName) {
+  try {
+    let res = await fetch(`api/prices/${itemName}`);
+    let prices = await res.json();
+    let avgPrice = prices.reduce((a, b) => a + b) / prices.length;
 
+    return avgPrice;
+  } catch (e) {
+    console.error(e);
+    return 0;
+  }
+}
