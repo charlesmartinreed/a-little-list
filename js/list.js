@@ -4,6 +4,7 @@ import {
   fetchAvgItemPrice,
 } from "./utils.js";
 
+
 let sortByDescending = true;
 let activeListName = null;
 

@@ -83,64 +83,106 @@ function handleAccountButtonClicked(btn) {
   toggleLoginModal();
 }
 
-function handleLoginAndSignup() {
-  if (checkInputIsValid()) {
-    if (clickedBtn.classList.contains("btn-login")) {
-      login(inputEmail, inputPassword);
-    } else {
-      signup(inputEmail, inputPassword);
+function toggleLoginModal(modalMsg, btnText) {
+  loginModal.querySelector(".modal-header").textContent = modalMsg;
+  loginModal.querySelector("#btn-login-modal-submit").textContent = btnText;
+
+  loginModal.classList.toggle("active");
+  pageContainer.classList.toggle("modal-active");
+}
+
+async function handleLogin() {
+  toggleLoginModal("Welcome back 🥳", "Log in");
+
+  // check the inputs and passwords
+  if (validateUserInfo()) {
+    let email = inputEmail;
+    let password = inputPassword;
+
+    const { user, session, error } = await supabase.auth.signIn({
+      email,
+      password,
+    });
+
+    if (user) {
+      // toggleLoginModal(null, null);
+      window.location.replace(`/list/${user.email}`);
     }
-  } else {
-    submitBtn.animate(
-      [
-        { transform: "translateX(-2px) rotate(-5deg)" },
-        { transform: "translateX(0px) rotate(0deg)" },
-        { transform: "translateX(2px) rotate(5deg)" },
-      ],
-      {
-        duration: 100,
-        iterations: 3,
-      }
-    );
-    return;
+
+    if (error) {
+      submitBtn.animate(
+        [
+          { transform: "translateX(-2px) rotate(-5deg)" },
+          { transform: "translateX(0px) rotate(0deg)" },
+          { transform: "translateX(2px) rotate(5deg)" },
+        ],
+        {
+          duration: 100,
+          iterations: 3,
+        }
+      );
+      // TODO: Replace with proper UI bulletin
+      alert(`Unable to login: ${error}`);
+    }
   }
 }
 
-function toggleLoginModal() {
-  loginModal.classList.toggle("active");
-  pageContainer.classList.toggle("modal-active");
+async function handleSignup() {
+  toggleLoginModal("We're glad to have you 👏", "Sign up");
 
-  // document.querySelector("body").removeEventListener("click");
+  // check the inputs and passwords
+  if (validateUserInfo()) {
+    let email = inputEmail;
+    let password = inputPassword;
+
+    const { user, session, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (user) {
+      // toggleLoginModal(null, null);
+      window.location.replace(`/list/${user.email}`);
+    }
+
+    if (error) {
+      submitBtn.animate(
+        [
+          { transform: "translateX(-2px) rotate(-5deg)" },
+          { transform: "translateX(0px) rotate(0deg)" },
+          { transform: "translateX(2px) rotate(5deg)" },
+        ],
+        {
+          duration: 100,
+          iterations: 3,
+        }
+      );
+      // TODO: Replace with proper UI bulletin
+      alert(`Unable to login: ${error}`);
+    }
+  }
+
+  // check the inputs and passwords
 }
 
-function login(user, pass) {
-  toggleLoginModal();
-}
+function validateUserInfo() {
+  // currently, not using password check
+  // this is just a demo app, of course
+  // beyond that, that's a back-end check not front-end!
 
-function signup(user, pass) {
-  toggleLoginModal();
-}
-
-function checkInputIsValid() {
-  return inputEmail !== "" || inputPassword !== "";
+  return true;
 }
 
 function closeModalonBodyClick() {
   // shoutout to https://techstacker.com/close-modal-click-outside-vanilla-javascript/ for .matches and .closest
   document.addEventListener("click", (e) => {
-    if (e.target.matches("#btn-login-modal-submit")) {
-      handleLoginAndSignup(e.target);
-      return;
-    }
-
-    if (e.target.matches(".container-landing-page")) {
-      if (loginModal.classList.contains("active")) {
+    if (
+      loginModal.classList.contains("active") &&
+      pageContainer.classList.contains("modal-active")
+    ) {
+      if (e.target.matches(".container-landing-page")) {
         toggleLoginModal();
       }
-    }
-
-    if (e.target.matches(".btn-login") || e.target.matches(".btn-signup")) {
-      handleAccountButtonClicked(e.target);
     }
   });
 }
