@@ -91,79 +91,80 @@ function toggleLoginModal(modalMsg, btnText) {
   pageContainer.classList.toggle("modal-active");
 }
 
-async function handleLogin() {
-  toggleLoginModal("Welcome back 🥳", "Log in");
+// async function handleSignup() {
+//   toggleLoginModal("We're glad to have you 👏", "Sign up");
 
-  // check the inputs and passwords
-  if (validateUserInfo()) {
-    let email = inputEmail;
-    let password = inputPassword;
+//   // check the inputs and passwords
+//   if (validateUserInfo()) {
+//     let email = inputEmail;
+//     let password = inputPassword;
 
-    const { user, session, error } = await supabase.auth.signIn({
-      email,
-      password,
-    });
+//     const { user, session, error } = await sb.auth.signUp({
+//       email,
+//       password,
+//     });
 
-    if (user) {
-      // toggleLoginModal(null, null);
-      window.location.replace(`/list/${user.email}`);
-    }
+//     if (user) {
+//       // toggleLoginModal(null, null);
+//       window.location.replace(`/list/${user.email}`);
+//     }
 
-    if (error) {
-      submitBtn.animate(
-        [
-          { transform: "translateX(-2px) rotate(-5deg)" },
-          { transform: "translateX(0px) rotate(0deg)" },
-          { transform: "translateX(2px) rotate(5deg)" },
-        ],
-        {
-          duration: 100,
-          iterations: 3,
-        }
-      );
-      // TODO: Replace with proper UI bulletin
-      alert(`Unable to login: ${error}`);
-    }
-  }
-}
+//     if (error) {
+//       submitBtn.animate(
+//         [
+//           { transform: "translateX(-2px) rotate(-5deg)" },
+//           { transform: "translateX(0px) rotate(0deg)" },
+//           { transform: "translateX(2px) rotate(5deg)" },
+//         ],
+//         {
+//           duration: 100,
+//           iterations: 3,
+//         }
+//       );
+//       // TODO: Replace with proper UI bulletin
+//       alert(`Unable to login: ${error}`);
+//     }
+//   }
+//   // check the inputs and passwords
+// }
+// async function handleLogin() {
+//   toggleLoginModal("Welcome back 🥳", "Log in");
 
-async function handleSignup() {
-  toggleLoginModal("We're glad to have you 👏", "Sign up");
+//   // check the inputs and passwords
+//   if (validateUserInfo()) {
+//     let email = inputEmail;
+//     let password = inputPassword;
 
-  // check the inputs and passwords
-  if (validateUserInfo()) {
-    let email = inputEmail;
-    let password = inputPassword;
+//     try {
+//       let response = await fetch("/list", {
+//         method: "POST",
+//         body: {
+//           username: email,
+//           password: password,
+//         },
+//       });
+//     } catch (e) {
+//       submitBtn.animate(
+//         [
+//           { transform: "translateX(-2px) rotate(-5deg)" },
+//           { transform: "translateX(0px) rotate(0deg)" },
+//           { transform: "translateX(2px) rotate(5deg)" },
+//         ],
+//         {
+//           duration: 100,
+//           iterations: 3,
+//         }
+//       );
+//       // TODO: Replace with proper UI bulletin
+//       alert(`Unable to login: ${e}`);
+//     }
 
-    const { user, session, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (user) {
-      // toggleLoginModal(null, null);
-      window.location.replace(`/list/${user.email}`);
-    }
-
-    if (error) {
-      submitBtn.animate(
-        [
-          { transform: "translateX(-2px) rotate(-5deg)" },
-          { transform: "translateX(0px) rotate(0deg)" },
-          { transform: "translateX(2px) rotate(5deg)" },
-        ],
-        {
-          duration: 100,
-          iterations: 3,
-        }
-      );
-      // TODO: Replace with proper UI bulletin
-      alert(`Unable to login: ${error}`);
-    }
-  }
-
-  // check the inputs and passwords
-}
+//     if (user) {
+//       // toggleLoginModal(null, null);
+//       window.location.replace(`/list/${user.email}`);
+//     }
+//   }
+// }
 
 function validateUserInfo() {
   // currently, not using password check

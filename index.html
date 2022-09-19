@@ -5,8 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/index.css" />
-  
+
+    <!-- SCRIPTS -->
     <script defer src="js/index.js"></script>
+
     <title>Littlelist</title>
   </head>
   <body>
@@ -56,6 +58,7 @@
             data-btn-text="Log in"
             data-heading-text="Welcome back 🥳"
             onclick="handleLogin()"
+            disabled
           >
             Log in
           </button>
@@ -65,14 +68,12 @@
             data-btn-text="Sign up"
             data-heading-text="We're glad to have you 👏"
             onclick="handleSignup()"
+            disabled
           >
             Sign up
           </button>
           <div class="cta-guest-mode">
-            <a
-              href="list?is_guest=true"
-              class="link-guest-mode"
-              id="link-guest-mode"
+            <a href="list" class="link-guest-mode" id="link-guest-mode"
               >Continue as Guest</a
             >
           </div>

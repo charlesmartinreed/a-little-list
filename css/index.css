@@ -47,6 +47,26 @@ input::placeholder {
   color: inherit;
 }
 
+.btn:disabled,
+.btn-ui:disabled {
+  filter: opacity(0.6);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn:disabled:after {
+  /* display: block; */
+  position: absolute;
+  content: "";
+  height: 1px;
+  width: 120%;
+  color: #111;
+  top: 50%;
+  left: -10%;
+  transform: translateY(-50%);
+  border-bottom: 5px solid #111;
+}
+
 .modal .btn,
 #btn-login,
 #btn-signup {

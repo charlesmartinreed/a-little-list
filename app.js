@@ -12,7 +12,10 @@ const PORT = process.env.SERVER_PORT || 6500;
 
 // API VARIABLES
 
+let supabase_db_user = null;
+
 const app = express();
+createClient(process.env.SUPABASE_DB_URL, process.env.SUPABASE_DB_PW);
 
 app.use(express.static(`${__dirname}`));
 app.use(express.json());
@@ -21,22 +24,7 @@ app.get("/", (req, res) => {
   res.sendFile(`${__dirname}/index.html`);
 });
 
-app.get("/list/:username", (req, res) => {
-  // if = req.params;
-  // grab the email add from the params
-  // use that to pull the info from the DB
-  let { email } = req.params;
-
-  if (email === "guest") {
-    console.log("guest mode active");
-  } else {
-    console.log("pulling DB items for user", email);
-  }
-
-  if (username === null) {
-    res.redirect("/");
-  }
-
+app.get("/list", (req, res) => {
   res.sendFile(`${__dirname}/list.html`);
 });
 

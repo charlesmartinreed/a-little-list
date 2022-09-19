@@ -4,7 +4,6 @@ import {
   fetchAvgItemPrice,
 } from "./utils.js";
 
-
 let sortByDescending = true;
 let activeListName = null;
 
@@ -145,7 +144,7 @@ function generateListsPane() {
       <button class="btn btn-lists-list-display" id="btn-lists-list-display" data-list-id=${list.list_id}>A list of ${list.list_name}</button>
     </div>
     <div>
-      <button class="btn btn-lists-list-share">Share</button>
+      <button class="btn btn-lists-list-share" disabled>Share</button>
       <button class="btn btn-lists-list-delete">Delete</button>
     </div>
   </div>
