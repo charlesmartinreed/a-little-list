@@ -1,9 +1,5 @@
 require("dotenv").config();
 
-const { JSDOM } = require("jsdom");
-const { createClient } = require("@supabase/supabase-js");
-
-const path = require("path");
 const express = require("express");
 
 // ENV VARIABLES
@@ -12,10 +8,7 @@ const PORT = process.env.SERVER_PORT || 6500;
 
 // API VARIABLES
 
-let supabase_db_user = null;
-
 const app = express();
-createClient(process.env.SUPABASE_DB_URL, process.env.SUPABASE_DB_PW);
 
 app.use(express.static(`${__dirname}`));
 app.use(express.json());
@@ -49,12 +42,3 @@ app.use((req, res, next) => {
 });
 
 app.listen(PORT, HOST, () => console.log("now listening on PORT", HOST, PORT));
-
-async function requestAPIAccessToken() {
-  // TODO: ADD WEB SCRAPING
-}
-
-function encodeStringWithUnicode(value) {
-  // TODO: ADD WEB SCRAPING
-  // return `{{${Buffer.from(value, "utf8").toString("base64")}}}`;
-}
