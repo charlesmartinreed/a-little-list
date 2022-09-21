@@ -7,6 +7,9 @@ import {
 let sortByDescending = true;
 let activeListName = null;
 
+const settingsPane = document.querySelector(".list-settings-pane");
+const settingsPaneCloseBtn = document.querySelector("#settings-pane-close-btn");
+
 const list = document.querySelector(".container-items");
 const listItems = document.querySelectorAll(".container-list-item");
 const listsListContainer = document.querySelector("#container-lists-list");
@@ -19,6 +22,7 @@ const dialog = document.querySelector("#notes-dialog");
 
 const createNewListBtn = document.querySelector("#btn-lists-create-new-list");
 const listsListToggleBtn = document.querySelector("#btn-lists-list-toggle");
+const settingsToggleBtn = document.querySelector("#btn-nav-settings");
 const lockUnlockBtn = document.querySelector(".btn-lock-unlock-all");
 const addNewItemBtn = document.querySelector(".btn-add-new-item");
 const deleteAllItemsBtn = document.querySelector(".btn-delete-all");
@@ -48,6 +52,12 @@ let deletedItems = [];
 // grab the price data, if possible
 
 // EVENT LISTENERS
+settingsToggleBtn.addEventListener("click", (e) => {
+  settingsPane.classList.toggle("active");
+  settingsPaneCloseBtn.addEventListener("click", (e) =>
+    settingsPane.classList.remove("active")
+  );
+});
 
 createNewListBtn.addEventListener("click", (e) => createNewList());
 

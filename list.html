@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="css/list.css" />
     <script defer src="js/utils.js" type="module"></script>
     <script defer src="js/list.js" type="module"></script>
@@ -12,6 +19,22 @@
   <body>
     <div class="container-lists-list" id="container-lists-list">
       <!-- generated in JS -->
+    </div>
+    <div class="list-settings-pane" id="list-settings-pane">
+      <div class="settings-pane-item">
+        <div class="settings-pane-item-text">
+          Auto-delete unlocked items at start of each week
+        </div>
+        <div class="settings-pane-item-toggle">
+          <label class="settings-toggle-switch">
+            <input type="checkbox" />
+            <span class="checkbox-slider"></span>
+          </label>
+        </div>
+      </div>
+      <button class="btn btn-lists-list-close" id="settings-pane-close-btn">
+        Close
+      </button>
     </div>
     <div class="modal modal-info" id="modal-info">
       <div>
@@ -82,13 +105,11 @@
         </div>
         <div class="nav-right">
           <button
-            class="btn-ui btn-nav-user-login"
-            id="btn-nav-user-login"
-            title="Login / Logout"
-            disabled
+            class="btn-ui btn-nav-settings"
+            id="btn-nav-settings"
+            title="Change Settings"
           >
-            <span class="btn-icon">👥</span>
-            <span class="btn-text">Login</span>
+            <span class="btn-icon">⚙️</span>
           </button>
         </div>
       </nav>
