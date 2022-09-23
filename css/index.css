@@ -43,13 +43,30 @@ a {
   font-weight: 600;
 }
 
+input::-webkit-input-placeholder {
+  color: inherit;
+}
+
+input::-moz-placeholder {
+  color: inherit;
+}
+
+input:-ms-input-placeholder {
+  color: inherit;
+}
+
+input::-ms-input-placeholder {
+  color: inherit;
+}
+
 input::placeholder {
   color: inherit;
 }
 
 .btn:disabled,
 .btn-ui:disabled {
-  filter: opacity(0.6);
+  -webkit-filter: opacity(0.6);
+          filter: opacity(0.6);
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -114,8 +131,6 @@ input::placeholder {
 .modal .btn {
   min-width: 65px;
 }
-
-/* .modal.login-modal  */
 
 .modal-header {
   font-size: 26px;

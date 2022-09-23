@@ -142,6 +142,8 @@ function updateListTitle(updatedTitle) {
 
   matchedList.list_name = updatedTitle;
   activeListName = matchedList.list_name;
+
+  writeToLocalStorage(allItems);
 }
 
 function generateListsPane() {
@@ -151,7 +153,7 @@ function generateListsPane() {
     contentHTML += `
     <div class="container-lists-list-item" id="container-lists-list-item">
     <div>
-      <button class="btn btn-lists-list-display" id="btn-lists-list-display" data-list-id=${list.list_id}>A list of ${list.list_name}</button>
+      <button class="btn btn-lists-list-display" id="btn-lists-list-display" data-list-id=${list.list_id}>${list.list_name}</button>
     </div>
     <div>
       <button class="btn btn-lists-list-share" disabled>Share</button>
