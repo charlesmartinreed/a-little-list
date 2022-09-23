@@ -210,7 +210,11 @@ nav .btn {
 
 .btn-lists-list-close {
   width: 90px;
-  align-self: center;
+  position: absolute;
+  bottom: 5%;
+  right: 50%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .container-lists-list-item .btn-lists-list-share,
@@ -246,6 +250,7 @@ nav .btn {
 
 .btn-lists-list-close:hover,
 .btn-lists-list-close:focus {
+  transform: translate(-50%) scale(1.15);
   outline: auto;
   box-shadow: 4px 6px 1px rgba(0, 0, 0, 0.8);
 
